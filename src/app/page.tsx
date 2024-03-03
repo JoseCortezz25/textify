@@ -1,112 +1,117 @@
 import Image from "next/image";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { placeholderExamples as placeholders } from "@/utils/data";
+import { Button } from "@/components/ui/button";
+import { Github } from "lucide-react";
+
+interface OptionButtonProps {
+  label: string;
+  icon: string;
+}
+
+const OptionButton = ({ label, icon, ...props }: OptionButtonProps) => {
+  return (
+    <button className="option-card" {...props}>
+      <div className="option-card__image">
+        <Image src={icon} width={24} height={24} alt="option-card" />
+      </div>
+      <p className="option-card__label">{label}</p>
+    </button>
+  );
+};
 
 export default function Home() {
+
+  const randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)].placeholder;
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="flex min-h-screen flex-col items-center justify-between pt-24">
+
+      <div className="max-w-[980px] mx-auto">
+        <div className="max-w-[980px] w-full mx-auto space-y-3 mb-8">
+          <h1 className="font-[600] text-3xl">Genera contenido de calidad en segundos con AI</h1>
+          <p></p>
+          <Button variant="outline" className="space-x-2">
+            <Image src="/icons/github.svg" width={20} height={20} alt="github" />
+            <p>Repositorio</p>
+          </Button>
         </div>
-      </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <div>
+          <div className="group-field">
+            <Label htmlFor="message">Escribir sobre</Label>
+            <Textarea placeholder={randomPlaceholder} id="message" />
+          </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          <div className="group-field">
+            <Label htmlFor="message">Elige el tono</Label>
+            <RadioGroup className="flex gap-[20px] flex-wrap">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Profesional" id="r1" />
+                <Label htmlFor="r1">Profesional</Label>
+              </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Informal" id="r2" />
+                <Label htmlFor="r2">Informal</Label>
+              </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Entusiasta" id="r3" />
+                <Label htmlFor="r3">Entusiasta</Label>
+              </div>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Informativo" id="r4" />
+                <Label htmlFor="r4">Informativo</Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Divertido" id="r5" />
+                <Label htmlFor="r5">Divertido</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="group-field">
+            <Label htmlFor="message">Formato</Label>
+
+            <div className="flex flex-wrap gap-[25px]">
+              <OptionButton label="Párrafo" icon="/icons/paragraph.svg" />
+              <OptionButton label="Correo Electrónico" icon="/icons/email.svg" />
+              <OptionButton label="Ideas" icon="/icons/list-bullet.svg" />
+              <OptionButton label="Entrada de Blog" icon="/icons/blog.svg" />
+              <OptionButton label="Publicación LinkedIn" icon="/icons/linkedin.svg" />
+            </div>
+
+          </div>
+
+          <div className="group-field">
+            <Label htmlFor="message">Logitud</Label>
+            <RadioGroup className="flex gap-[20px] flex-wrap">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Corto" id="r1" />
+                <Label htmlFor="r1">Corto</Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Medio" id="r1" />
+                <Label htmlFor="r1">Medio</Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Largo" id="r1" />
+                <Label htmlFor="r1">Largo</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="group-field">
+            <Label>Vista previa</Label>
+            <Textarea placeholder="Type your message here." id="message" rows={6} />
+          </div>
+        </div>
       </div>
     </main>
   );
