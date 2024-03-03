@@ -1,10 +1,13 @@
+"use client";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator";
 import { placeholderExamples as placeholders } from "@/utils/data";
 import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/utils/utils";
 
 interface OptionButtonProps {
   label: string;
@@ -23,26 +26,33 @@ const OptionButton = ({ label, icon, ...props }: OptionButtonProps) => {
 };
 
 export default function Home() {
+  const [countText, setCountText] = useState(0);
+
+  const handleTextArea = (target: any) => {
+    setCountText(target.value.length);
+  };
 
   const randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)].placeholder;
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-16 sm:py-24">
-      <div className="max-w-[980px] mx-auto px-6 sm:px-4 md:px-0">
-        <div className="max-w-[980px] w-full mx-auto space-y-3 mb-8 pb-9 border-b border-neutral-200">
+      <div className="max-w-[780px] mx-auto px-6 sm:px-4 md:px-0">
+        <div className="max-w-[780px] w-full mx-auto space-y-3 mb-8 pb-9 border-b border-neutral-200">
           <h1 className="font-[600] text-3xl">Textify</h1>
-          <p>Genera contenido de calidad en segundos con AI</p>
-          <Button variant="outline" className="space-x-2">
-            <Image src="/icons/github.svg" width={20} height={20} alt="github" />
-            <p>Repositorio</p>
-          </Button>
+          <p>Convierta sus ideas en borradores pulcros con facilidad, optimizando su tiempo y garantizando el tono adecuado, en cualquier plataforma de escritura en internet.</p>
+          <a href="" className="inline-block" target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" className="space-x-2">
+              <Image src="/icons/github.svg" width={20} height={20} alt="github" />
+              <p>Repositorio</p>
+            </Button>
+          </a>
         </div>
 
         <div>
           <div className="group-field">
             <Label htmlFor="message">Escribir sobre</Label>
             <div>
-              <Textarea placeholder={randomPlaceholder} id="message" maxLength={2000} />
-              <p className="text-[12px] mt-2"><span>0000</span> / <span>2000</span></p>
+              <Textarea placeholder={randomPlaceholder} id="message" rows={4} maxLength={1500} onChange={({ target }) => handleTextArea(target)} />
+              <p className={cn('text-[12px] mt-2', countText > 1400 && 'text-yellow-400', countText > 1450 && 'text-red-500')}><span>{countText}</span> / <span>1500</span></p>
             </div>
           </div>
 
@@ -108,6 +118,12 @@ export default function Home() {
               </div>
             </RadioGroup>
           </div>
+
+          <div className="group-field">
+            <Button>Generar borrador</Button>
+          </div>
+
+          <Separator className="my-10" />
 
           <div className="group-field">
             <Label>Vista previa</Label>
