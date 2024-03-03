@@ -76,7 +76,7 @@
 }
 
 .group-field {
-  @apply mb-5 py-2 space-y-2;
+  @apply mb-5 py-2 space-y-4 sm:space-y-2;
 }
 
 .option-card {
@@ -98,3 +98,4 @@
 .frame {
   border: 1px dashed #000;
 }
+
