@@ -10,7 +10,7 @@
       "always"
     ],
     "space-before-function-paren": [
-      "error",
+      "off",
       "never"
     ],
     "camelcase": [
