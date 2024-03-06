@@ -30,5 +30,9 @@
       }
     ],
     "no-debugger": "off"
-  }
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "src/components/ui"
+  ]
 }
