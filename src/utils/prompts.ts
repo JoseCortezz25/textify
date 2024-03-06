@@ -1,3 +1,5 @@
+import { LENGTH, FORMAT, TONES } from "./types";
+
 const lengthPrompts = {
   short: 'El texto debe contener menos de un parrafo comprendido de 1 a 3 oraciones.',
   medium: 'El texto debe contener maximo dos parrafos.',
@@ -12,7 +14,7 @@ const formatPrompts = {
   linkedin: 'El texto debe ser con la estructura de una publicacion de LinkedIn.'
 };
 
-export const generatePrompt = (messageUser: string, tone: string, length: 'short' | 'medium' | 'long', format: 'paragraph' | 'email' | 'ideas' | 'blog') => {
+export const generatePrompt = (messageUser: string, tone: TONES, length: LENGTH, format: FORMAT) => {
   return `
   Contexto:
   Eres una avanzada herramienta de inteligencia artificial diseñada para ayudar a los usuarios a convertir

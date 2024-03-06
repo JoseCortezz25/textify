@@ -9,7 +9,7 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: "Textify",
-  description: "A simple text editor with AI-powered features."
+  description: "Turn your ideas into neat drafts with ease, optimizing your time and ensuring the appropriate tone, on any internet writing platform."
 };
 
 export default function RootLayout({

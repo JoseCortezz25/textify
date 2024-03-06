@@ -95,6 +95,10 @@
   @apply mt-2 text-center text-[13px] leading-[13.5px] text-neutral-900 font-[500];
 }
 
+.selected-option .option-card__image {
+  @apply bg-neutral-200;
+}
+
 .frame {
   border: 1px dashed #000;
 }

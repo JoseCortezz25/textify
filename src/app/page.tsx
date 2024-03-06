@@ -10,16 +10,18 @@ import { useState } from "react";
 import { cn } from "@/utils/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { generatePrompt } from "@/utils/prompts";
+import { FORMAT, LENGTH, TONES } from "@/utils/types";
 
 interface OptionButtonProps {
   label: string;
   icon: string;
   onClick?: () => void;
+  selected: boolean;
 }
 
-const OptionButton = ({ label, icon, onClick, ...props }: OptionButtonProps) => {
+const OptionButton = ({ label, icon, onClick, selected, ...props }: OptionButtonProps) => {
   return (
-    <button className="option-card" onClick={onClick} {...props}>
+    <button className={cn('option-card', selected && 'selected-option')} onClick={onClick} {...props}>
       <div className="option-card__image">
         <Image src={icon} width={24} height={24} alt="option-card" className="pointer-events-none" />
       </div>
@@ -32,9 +34,9 @@ export default function Home() {
   const [countText, setCountText] = useState(0);
 
   const [initialMessage, setInitialMessage] = useState('');
-  const [tone, setTone] = useState('');
-  const [format, setFormat] = useState('');
-  const [length, setLength] = useState('');
+  const [tone, setTone] = useState<TONES | undefined>();
+  const [format, setFormat] = useState<FORMAT | undefined>();
+  const [length, setLength] = useState<LENGTH | undefined>();
   const [preview, setPreview] = useState('');
   const [error, setError] = useState({ error: false, message: '' });
 
@@ -43,10 +45,9 @@ export default function Home() {
       const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-      const result = await model.generateContent(generatePrompt(initialMessage, tone, length, format));
+      const result = await model.generateContent(generatePrompt(initialMessage, tone as TONES, length as LENGTH, format as FORMAT));
       const response = await result.response;
       const text = response.text();
-      console.log('text', text);
 
       return text as string;
 
@@ -104,27 +105,27 @@ export default function Home() {
           <div className="group-field">
             <Label htmlFor="message">Elige el tono</Label>
             <RadioGroup className="flex gap-[20px] flex-wrap" >
-              <div className="flex items-center space-x-2" onClick={() => setTone('profesional')}>
+              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.PROFESSIONAL)}>
                 <RadioGroupItem value="Profesional" id="r1" />
                 <Label htmlFor="r1" className="cursor-pointer">Profesional</Label>
               </div>
 
-              <div className="flex items-center space-x-2" onClick={() => setTone('informal')}>
+              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.INFORMAL)}>
                 <RadioGroupItem value="Informal" id="r2" />
                 <Label htmlFor="r2" className="cursor-pointer">Informal</Label>
               </div>
 
-              <div className="flex items-center space-x-2" onClick={() => setTone('entusiasta')}>
+              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.ENTHUSIASTIC)}>
                 <RadioGroupItem value="Entusiasta" id="r3" />
                 <Label htmlFor="r3" className="cursor-pointer">Entusiasta</Label>
               </div>
 
-              <div className="flex items-center space-x-2" onClick={() => setTone('informativo')}>
+              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.INFORMATIVE)}>
                 <RadioGroupItem value="Informativo" id="r4" />
                 <Label htmlFor="r4" className="cursor-pointer">Informativo</Label>
               </div>
 
-              <div className="flex items-center space-x-2" onClick={() => setTone('divertido')}>
+              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.FUNNY)}>
                 <RadioGroupItem value="Divertido" id="r5" />
                 <Label htmlFor="r5" className="cursor-pointer">Divertido</Label>
               </div>
@@ -135,10 +136,10 @@ export default function Home() {
             <Label htmlFor="message">Formato</Label>
 
             <div className="flex flex-wrap gap-[25px]">
-              <OptionButton label="Párrafo" icon="/icons/paragraph.svg" onClick={() => setFormat('paragraph')} />
-              <OptionButton label="Correo Electrónico" icon="/icons/email.svg" onClick={() => setFormat('email')} />
-              <OptionButton label="Ideas" icon="/icons/list-bullet.svg" onClick={() => setFormat('ideas')} />
-              <OptionButton label="Entrada de Blog" icon="/icons/blog.svg" onClick={() => setFormat('blog')} />
+              <OptionButton label="Párrafo" icon="/icons/paragraph.svg" onClick={() => setFormat(FORMAT.PARAGRAPH)} selected={format === FORMAT.PARAGRAPH} />
+              <OptionButton label="Correo Electrónico" icon="/icons/email.svg" onClick={() => setFormat(FORMAT.EMAIL)} selected={format === FORMAT.EMAIL} />
+              <OptionButton label="Ideas" icon="/icons/list-bullet.svg" onClick={() => setFormat(FORMAT.IDEAS)} selected={format === FORMAT.IDEAS} />
+              <OptionButton label="Entrada de Blog" icon="/icons/blog.svg" onClick={() => setFormat(FORMAT.BLOG)} selected={format === FORMAT.BLOG} />
               {/* <OptionButton label="Publicación LinkedIn" icon="/icons/linkedin.svg" onClick={() => setFormat('publicacion linkedin')} /> */}
             </div>
 
@@ -147,17 +148,17 @@ export default function Home() {
           <div className="group-field">
             <Label htmlFor="message">Logitud</Label>
             <RadioGroup className="flex gap-[20px] flex-wrap">
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('short')}>
+              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength(LENGTH.SHORT)}>
                 <RadioGroupItem value="Corto" id="r-corto" />
                 <Label htmlFor="r-corto" className="cursor-pointer">Corto</Label>
               </div>
 
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('medium')}>
+              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength(LENGTH.MEDIUM)}>
                 <RadioGroupItem value="Medio" id="r-medio" />
                 <Label htmlFor="r-medio" className="cursor-pointer">Medio</Label>
               </div>
 
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('long')}>
+              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength(LENGTH.LONG)}>
                 <RadioGroupItem value="Largo" id="r-largo" />
                 <Label htmlFor="r-largo" className="cursor-pointer">Largo</Label>
               </div>
