@@ -8,6 +8,8 @@ import { placeholderExamples as placeholders } from "@/utils/data";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { cn } from "@/utils/utils";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { generatePrompt } from "@/utils/prompts";
 
 interface OptionButtonProps {
   label: string;
@@ -36,6 +38,23 @@ export default function Home() {
   const [preview, setPreview] = useState('');
   const [error, setError] = useState({ error: false, message: '' });
 
+  const fetchAltFromAI = async () => {
+    try {
+      const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+      const result = await model.generateContent(generatePrompt(initialMessage, tone, length, format));
+      const response = await result.response;
+      const text = response.text();
+      console.log('text', text);
+
+      return text as string;
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleTextArea = (target: any) => {
     setCountText(target.value.length);
     setInitialMessage(target.value);
@@ -43,13 +62,19 @@ export default function Home() {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    // debugger;
     if (!initialMessage && !tone && !format && !length) {
       setError({ error: true, message: 'Todos los campos son obligatorios' });
       return;
     }
 
-    setPreview('Cargando...');
+    fetchAltFromAI()
+      .then((text: any) => {
+        setPreview(text);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    // setPreview(text);
   };
 
   const randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)].placeholder;
@@ -110,11 +135,11 @@ export default function Home() {
             <Label htmlFor="message">Formato</Label>
 
             <div className="flex flex-wrap gap-[25px]">
-              <OptionButton label="Párrafo" icon="/icons/paragraph.svg" onClick={() => setFormat('parrafo')} />
-              <OptionButton label="Correo Electrónico" icon="/icons/email.svg" onClick={() => setFormat('correo electronico')} />
+              <OptionButton label="Párrafo" icon="/icons/paragraph.svg" onClick={() => setFormat('paragraph')} />
+              <OptionButton label="Correo Electrónico" icon="/icons/email.svg" onClick={() => setFormat('email')} />
               <OptionButton label="Ideas" icon="/icons/list-bullet.svg" onClick={() => setFormat('ideas')} />
-              <OptionButton label="Entrada de Blog" icon="/icons/blog.svg" onClick={() => setFormat('entrada de blog')} />
-              <OptionButton label="Publicación LinkedIn" icon="/icons/linkedin.svg" onClick={() => setFormat('publicacion linkedin')} />
+              <OptionButton label="Entrada de Blog" icon="/icons/blog.svg" onClick={() => setFormat('blog')} />
+              {/* <OptionButton label="Publicación LinkedIn" icon="/icons/linkedin.svg" onClick={() => setFormat('publicacion linkedin')} /> */}
             </div>
 
           </div>
@@ -122,17 +147,17 @@ export default function Home() {
           <div className="group-field">
             <Label htmlFor="message">Logitud</Label>
             <RadioGroup className="flex gap-[20px] flex-wrap">
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('corto')}>
+              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('short')}>
                 <RadioGroupItem value="Corto" id="r-corto" />
                 <Label htmlFor="r-corto" className="cursor-pointer">Corto</Label>
               </div>
 
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('medio')}>
+              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('medium')}>
                 <RadioGroupItem value="Medio" id="r-medio" />
                 <Label htmlFor="r-medio" className="cursor-pointer">Medio</Label>
               </div>
 
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('largo')}>
+              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength('long')}>
                 <RadioGroupItem value="Largo" id="r-largo" />
                 <Label htmlFor="r-largo" className="cursor-pointer">Largo</Label>
               </div>
