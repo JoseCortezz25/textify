@@ -84,7 +84,8 @@
 }
 
 .option-card .option-card__image  {
-  @apply w-full h-[70px] bg-neutral-100 hover:bg-neutral-200 rounded-lg p-5 transition-all duration-100 ease-in-out;
+  @apply w-full h-[70px] rounded-lg p-5 transition-all duration-100 ease-in-out;
+  @apply bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-700 ;
 }
 
 .option-card .option-card__image img {
@@ -92,14 +93,22 @@
 }
 
 .option-card .option-card__label {
-  @apply mt-2 text-center text-[13px] leading-[13.5px] text-neutral-900 font-[500];
+  @apply mt-2 text-center text-[13px] leading-[13.5px] font-[500];
+  @apply text-neutral-900 dark:text-white;
 }
 
 .selected-option .option-card__image {
-  @apply bg-neutral-300;
+  @apply bg-neutral-300 dark:bg-neutral-800;
 }
 
 .frame {
   border: 1px dashed #000;
 }
 
+.button-repo {
+  @apply space-x-3;
+}
+
+.button-repo img {
+  margin: 0px;
+}
