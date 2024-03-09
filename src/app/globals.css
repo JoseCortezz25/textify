@@ -96,7 +96,7 @@
 }
 
 .selected-option .option-card__image {
-  @apply bg-neutral-200;
+  @apply bg-neutral-300;
 }
 
 .frame {

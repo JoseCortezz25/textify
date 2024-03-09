@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { placeholderExamples as placeholders } from "@/utils/data";
 import { Button } from "@/components/ui/button";
@@ -30,9 +31,21 @@ const OptionButton = ({ label, icon, onClick, selected, ...props }: OptionButton
   );
 };
 
+const TextareaSkeleton = () => {
+  return (
+    <>
+      <Skeleton className="h-[20px] w-[60%]" />
+      <Skeleton className="h-[20px] w-[55%]" />
+      <Skeleton className="h-[20px] w-[65%]" />
+      <Skeleton className="h-[20px] w-[63%]" />
+      <Skeleton className="h-[20px] w-[43%]" />
+    </>
+  );
+};
+
 export default function Home() {
   const [countText, setCountText] = useState(0);
-
+  const [loading, setLoading] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
   const [tone, setTone] = useState<TONES | undefined>();
   const [format, setFormat] = useState<FORMAT | undefined>();
@@ -63,10 +76,19 @@ export default function Home() {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    if (!initialMessage && !tone && !format && !length) {
+    console.group('Inputs');
+    console.log('initialMessage', initialMessage);
+    console.log('tone', tone);
+    console.log('format', format);
+    console.log('length', length);
+    console.groupEnd();
+
+    if (!initialMessage || !tone || !format || !length) {
       setError({ error: true, message: 'Todos los campos son obligatorios' });
       return;
     }
+    setError({ error: false, message: '' });
+    setLoading(true);
 
     fetchAltFromAI()
       .then((text: any) => {
@@ -74,6 +96,11 @@ export default function Home() {
       })
       .catch((error) => {
         console.error(error);
+        setError({ error: true, message: 'Ocurrió un error al generar el borrador' });
+        setPreview('');
+      })
+      .finally(() => {
+        setLoading(false);
       });
     // setPreview(text);
   };
@@ -177,7 +204,8 @@ export default function Home() {
 
           <div className="group-field">
             <Label>Vista previa</Label>
-            <Textarea placeholder="Type your message here." id="message" rows={6} value={preview} />
+            {loading ? <TextareaSkeleton /> : <Textarea placeholder="Aqui estará tu borrador generado" id="message" rows={8} value={preview} />}
+
           </div>
         </div>
       </div>
