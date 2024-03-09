@@ -7,11 +7,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { placeholderExamples as placeholders } from "@/utils/data";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { cn } from "@/utils/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { generatePrompt } from "@/utils/prompts";
 import { FORMAT, LENGTH, TONES } from "@/utils/types";
+import { toast } from "sonner";
 
 interface OptionButtonProps {
   label: string;
@@ -44,6 +45,7 @@ const TextareaSkeleton = () => {
 };
 
 export default function Home() {
+  const previewTextArea = useRef<HTMLTextAreaElement>(null);
   const [countText, setCountText] = useState(0);
   const [loading, setLoading] = useState(false);
   const [initialMessage, setInitialMessage] = useState('');
@@ -69,6 +71,18 @@ export default function Home() {
     }
   };
 
+  const onCopy = () => {
+    if (!preview) return;
+    navigator.clipboard.writeText(preview);
+    toast.success('Texto copiado al portapapeles');
+  };
+
+  const onClear = () => {
+    setPreview('');
+    if (!previewTextArea.current) return;
+    previewTextArea.current.defaultValue = '';
+  };
+
   const handleTextArea = (target: any) => {
     setCountText(target.value.length);
     setInitialMessage(target.value);
@@ -76,12 +90,7 @@ export default function Home() {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    console.group('Inputs');
-    console.log('initialMessage', initialMessage);
-    console.log('tone', tone);
-    console.log('format', format);
-    console.log('length', length);
-    console.groupEnd();
+    previewTextArea.current?.scrollIntoView({ behavior: 'smooth' });
 
     if (!initialMessage || !tone || !format || !length) {
       setError({ error: true, message: 'Todos los campos son obligatorios' });
@@ -93,6 +102,7 @@ export default function Home() {
     fetchAltFromAI()
       .then((text: any) => {
         setPreview(text);
+
       })
       .catch((error) => {
         console.error(error);
@@ -204,7 +214,15 @@ export default function Home() {
 
           <div className="group-field">
             <Label>Vista previa</Label>
-            {loading ? <TextareaSkeleton /> : <Textarea placeholder="Aqui estará tu borrador generado" id="message" rows={8} value={preview} />}
+            {loading ? <TextareaSkeleton /> : (
+              <>
+                <Textarea ref={previewTextArea} placeholder="Aqui estará tu borrador generado" rows={8} defaultValue={preview} />
+                <div className="flex space-x-3">
+                  <Button variant="secondary" className="mt-4" onClick={onCopy}>Copiar</Button>
+                  <Button variant="outline" className="mt-4" onClick={onClear}>Limpiar</Button>
+                </div>
+              </>
+            )}
 
           </div>
         </div>
