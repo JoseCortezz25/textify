@@ -7,26 +7,28 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { placeholderExamples as placeholders } from "@/utils/data";
 import { Button } from "@/components/ui/button";
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { cn } from "@/utils/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { generatePrompt } from "@/utils/prompts";
 import { FORMAT, LENGTH, TONES } from "@/utils/types";
 import { toast } from "sonner";
 import { ModeToggle } from "@/components/ModeToggle";
+import { Blog, Email, ListBullet, Paragraph } from "@/components/Icons";
 
 interface OptionButtonProps {
   label: string;
-  icon: string;
   onClick?: () => void;
   selected: boolean;
+  children: ReactNode;
 }
 
-const OptionButton = ({ label, icon, onClick, selected, ...props }: OptionButtonProps) => {
+const OptionButton = ({ label, onClick, selected, children, ...props }: OptionButtonProps) => {
   return (
     <button className={cn('option-card', selected && 'selected-option')} onClick={onClick} {...props}>
       <div className="option-card__image">
-        <Image src={icon} width={24} height={24} alt="option-card" className="pointer-events-none" />
+        {children}
+        {/* <Image src={icon} width={24} height={24} alt="option-card" className="pointer-events-none" /> */}
       </div>
       <p className="option-card__label">{label}</p>
     </button>
@@ -113,7 +115,6 @@ export default function Home() {
       .finally(() => {
         setLoading(false);
       });
-    // setPreview(text);
   };
 
   const randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)].placeholder;
@@ -187,10 +188,18 @@ export default function Home() {
             <Label htmlFor="message">Formato</Label>
 
             <div className="flex flex-wrap gap-[25px]">
-              <OptionButton label="Párrafo" icon="/icons/paragraph.svg" onClick={() => setFormat(FORMAT.PARAGRAPH)} selected={format === FORMAT.PARAGRAPH} />
-              <OptionButton label="Correo Electrónico" icon="/icons/email.svg" onClick={() => setFormat(FORMAT.EMAIL)} selected={format === FORMAT.EMAIL} />
-              <OptionButton label="Ideas" icon="/icons/list-bullet.svg" onClick={() => setFormat(FORMAT.IDEAS)} selected={format === FORMAT.IDEAS} />
-              <OptionButton label="Entrada de Blog" icon="/icons/blog.svg" onClick={() => setFormat(FORMAT.BLOG)} selected={format === FORMAT.BLOG} />
+              <OptionButton label="Párrafo" onClick={() => setFormat(FORMAT.PARAGRAPH)} selected={format === FORMAT.PARAGRAPH}>
+                <Paragraph />
+              </OptionButton>
+              <OptionButton label="Correo Electrónico" onClick={() => setFormat(FORMAT.EMAIL)} selected={format === FORMAT.EMAIL} >
+                <Email />
+              </OptionButton>
+              <OptionButton label="Ideas" onClick={() => setFormat(FORMAT.IDEAS)} selected={format === FORMAT.IDEAS}>
+                <ListBullet />
+              </OptionButton>
+              <OptionButton label="Entrada de Blog" onClick={() => setFormat(FORMAT.BLOG)} selected={format === FORMAT.BLOG} >
+                <Blog />
+              </OptionButton>
               {/* <OptionButton label="Publicación LinkedIn" icon="/icons/linkedin.svg" onClick={() => setFormat('publicacion linkedin')} /> */}
             </div>
 
