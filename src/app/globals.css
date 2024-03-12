@@ -85,12 +85,13 @@
 
 .option-card .option-card__image  {
   @apply w-full h-[70px] rounded-lg p-5 flex items-center justify-center;
-  @apply bg-neutral-100 hover:bg-neutral-200 dark:bg-[#182032];
+  @apply bg-neutral-100 hover:bg-neutral-400 dark:bg-[#182032];
   @apply transition-all duration-100 ease-in-out;
 }
 
-.option-card .option-card__image img {
+.option-card .option-card__image :is(img, svg) {
   @apply w-full h-full;
+  @apply transition-all duration-100 ease-in-out;
 }
 
 .option-card .option-card__label {
@@ -101,7 +102,6 @@
 
 .selected-option .option-card__image {
   @apply bg-neutral-700 text-white dark:bg-[#30467c];
-  @apply transition-all duration-100 ease-in-out;
 }
 
 .frame {
@@ -122,4 +122,19 @@
 
 .generic-icon svg {
   @apply w-full h-full;
+}
+
+.button-language {
+  @apply inline-flex w-auto px-4 py-2 space-x-2;
+  @apply cursor-pointer bg-neutral-100/70 hover:bg-neutral-200/70;
+  @apply rounded-md;
+  @apply transition-all duration-200 ease-in-out;
+}
+
+.button-language .button-language__label {
+  @apply text-sm font-[600];
+}
+
+.selected-language {
+  @apply bg-neutral-800 text-white;
 }

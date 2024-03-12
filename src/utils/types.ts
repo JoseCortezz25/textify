@@ -18,3 +18,9 @@ export enum LENGTH {
   MEDIUM = "medium",
   LONG = "long"
 };
+
+export enum LANGUAGE {
+  SPANISH = "ES",
+  ENGLISH = "EN",
+  PORTUGUESE = "PT"
+};

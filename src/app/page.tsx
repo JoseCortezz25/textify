@@ -11,7 +11,7 @@ import { ReactNode, useRef, useState } from "react";
 import { cn } from "@/utils/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { generatePrompt } from "@/utils/prompts";
-import { FORMAT, LENGTH, TONES } from "@/utils/types";
+import { FORMAT, LANGUAGE, LENGTH, TONES } from "@/utils/types";
 import { toast } from "sonner";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Blog, Email, ListBullet, Paragraph } from "@/components/Icons";
@@ -28,9 +28,24 @@ const OptionButton = ({ label, onClick, selected, children, ...props }: OptionBu
     <button className={cn('option-card', selected && 'selected-option')} onClick={onClick} {...props}>
       <div className="option-card__image">
         {children}
-        {/* <Image src={icon} width={24} height={24} alt="option-card" className="pointer-events-none" /> */}
       </div>
       <p className="option-card__label">{label}</p>
+    </button>
+  );
+};
+
+interface LanguageOptionProps {
+  label: string;
+  onClick?: () => void;
+  selected: boolean;
+  icon: string;
+}
+
+const LanguageOption = ({ label, onClick, icon, selected }: LanguageOptionProps) => {
+  return (
+    <button className={cn('button-language', selected && 'selected-language')} onClick={onClick}>
+      <Image src={icon} alt="Language Icon" width={20} height={20} />
+      <p className="button-language__label">{label}</p>
     </button>
   );
 };
@@ -56,6 +71,7 @@ export default function Home() {
   const [format, setFormat] = useState<FORMAT | undefined>();
   const [length, setLength] = useState<LENGTH | undefined>();
   const [preview, setPreview] = useState('');
+  const [language, setLanguage] = useState(LANGUAGE.SPANISH);
   const [error, setError] = useState({ error: false, message: '' });
 
   const fetchAltFromAI = async () => {
@@ -63,7 +79,7 @@ export default function Home() {
       const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-      const result = await model.generateContent(generatePrompt(initialMessage, tone as TONES, length as LENGTH, format as FORMAT));
+      const result = await model.generateContent(generatePrompt(initialMessage, tone as TONES, length as LENGTH, format as FORMAT, language as LANGUAGE));
       const response = await result.response;
       const text = response.text();
 
@@ -223,6 +239,15 @@ export default function Home() {
                 <Label htmlFor="r-largo" className="cursor-pointer">Largo</Label>
               </div>
             </RadioGroup>
+          </div>
+
+          <div className="group-field">
+            <Label htmlFor="message">Idioma</Label>
+            <div className="w-full flex flex-wrap gap-5">
+              <LanguageOption label="Español" icon="/icons/flag-colombia.svg" selected={language === LANGUAGE.SPANISH} onClick={() => setLanguage(LANGUAGE.SPANISH)} />
+              <LanguageOption label="Inglés" icon="/icons/flag-united-states.svg" selected={language === LANGUAGE.ENGLISH} onClick={() => setLanguage(LANGUAGE.ENGLISH)} />
+              <LanguageOption label="Portugues" icon="/icons/flag-brazil.svg" selected={language === LANGUAGE.PORTUGUESE} onClick={() => setLanguage(LANGUAGE.PORTUGUESE)} />
+            </div>
           </div>
 
           <div className="group-field">
