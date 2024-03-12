@@ -126,7 +126,7 @@
 
 .button-language {
   @apply inline-flex w-auto px-4 py-2 space-x-2;
-  @apply cursor-pointer bg-neutral-100/70 hover:bg-neutral-200/70;
+  @apply cursor-pointer bg-neutral-100/70 hover:bg-neutral-200/70 dark:bg-[#182032];
   @apply rounded-md;
   @apply transition-all duration-200 ease-in-out;
 }
@@ -136,5 +136,5 @@
 }
 
 .selected-language {
-  @apply bg-neutral-800 text-white;
+  @apply bg-neutral-800 text-white dark:bg-[#30467c];
 }
