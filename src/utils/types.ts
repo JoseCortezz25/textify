@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export enum TONES {
   PROFESSIONAL = "profesional",
   INFORMAL = "informal",
@@ -24,3 +26,22 @@ export enum LANGUAGE {
   ENGLISH = "EN",
   PORTUGUESE = "PT"
 };
+
+export interface OptionButtonProps {
+  label: string;
+  onClick?: () => void;
+  selected: boolean;
+  children: ReactNode;
+}
+
+export interface LanguageOptionProps {
+  label: string;
+  onClick?: () => void;
+  selected: boolean;
+  icon: string;
+}
+
+export interface TypographyProps {
+  as?: string;
+  children?: ReactNode;
+}

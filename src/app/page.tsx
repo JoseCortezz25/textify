@@ -15,40 +15,10 @@ import { FORMAT, LANGUAGE, LENGTH, TONES } from "@/utils/types";
 import { toast } from "sonner";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Blog, Email, ListBullet, Paragraph } from "@/components/Icons";
+import { OptionButton } from "@/components/OptionButton";
+import { LanguageOption } from "@/components/LanguageOption";
+import { Typography } from "@/components/typography";
 
-interface OptionButtonProps {
-  label: string;
-  onClick?: () => void;
-  selected: boolean;
-  children: ReactNode;
-}
-
-const OptionButton = ({ label, onClick, selected, children, ...props }: OptionButtonProps) => {
-  return (
-    <button className={cn('option-card', selected && 'selected-option')} onClick={onClick} {...props}>
-      <div className="option-card__image">
-        {children}
-      </div>
-      <p className="option-card__label">{label}</p>
-    </button>
-  );
-};
-
-interface LanguageOptionProps {
-  label: string;
-  onClick?: () => void;
-  selected: boolean;
-  icon: string;
-}
-
-const LanguageOption = ({ label, onClick, icon, selected }: LanguageOptionProps) => {
-  return (
-    <button className={cn('button-language', selected && 'selected-language')} onClick={onClick}>
-      <Image src={icon} alt="Language Icon" width={20} height={20} />
-      <p className="button-language__label">{label}</p>
-    </button>
-  );
-};
 
 const TextareaSkeleton = () => {
   return (
@@ -98,6 +68,16 @@ export default function Home() {
 
   const onClear = () => {
     setPreview('');
+
+    setLoading(false);
+    setTone(undefined);
+    setFormat(undefined);
+    setLength(undefined);
+    setInitialMessage('');
+    setLanguage(LANGUAGE.SPANISH);
+    setCountText(0);
+
+    setError({ error: false, message: '' });
     if (!previewTextArea.current) return;
     previewTextArea.current.defaultValue = '';
   };
@@ -140,7 +120,7 @@ export default function Home() {
         <div className="max-w-[780px] w-full mx-auto space-y-3 mb-8 pb-9 border-b border-neutral-200">
           <ModeToggle />
           <h1 className="font-[600] text-3xl">Textify</h1>
-          <p>Convierta sus ideas en borradores pulcros con facilidad, optimizando su tiempo y garantizando el tono adecuado, en cualquier plataforma de escritura en internet.</p>
+          <p>Convierta tus ideas en borradores pulcros con facilidad, optimizando su tiempo y garantizando el tono adecuado, en cualquier plataforma de escritura en internet.</p>
           <a href="https://github.com/JoseCortezz25/textify" className="inline-block" target="_blank" rel="noopener noreferrer">
             <Button variant="outline" className="button-repo">
               <div className="text-black dark:text-white">
@@ -216,7 +196,6 @@ export default function Home() {
               <OptionButton label="Entrada de Blog" onClick={() => setFormat(FORMAT.BLOG)} selected={format === FORMAT.BLOG} >
                 <Blog />
               </OptionButton>
-              {/* <OptionButton label="Publicación LinkedIn" icon="/icons/linkedin.svg" onClick={() => setFormat('publicacion linkedin')} /> */}
             </div>
 
           </div>
@@ -250,8 +229,28 @@ export default function Home() {
             </div>
           </div>
 
+          {/* <div className="group-field">
+            <Separator className="my-10" />
+            <Typography as="h2">Configuración complementaria</Typography>
+
+            <div className="group-field">
+              <Label htmlFor="target">Objetivo</Label>
+              <Textarea name="target" placeholder="Ingresa el objetivo del texto" />
+            </div>
+
+            <div className="group-field">
+              <Label htmlFor="audience">Audiencia</Label>
+              <Textarea name="audience" placeholder="Describe la audiencia" />
+            </div>
+
+            <div className="group-field">
+              <Label htmlFor="instructions">Intrucciones personalizadas</Label>
+              <Textarea name="instructions" placeholder="Describe tus instrucciones personalizadas para mejor resultados" />
+            </div>
+          </div> */}
+
           <div className="group-field">
-            <Button onClick={onSubmit}>Generar borrador</Button>
+            <Button onClick={onSubmit}>{!preview ? 'Generar borrador' : 'Generar otra versión'}</Button>
           </div>
 
           <div className="mt-10">

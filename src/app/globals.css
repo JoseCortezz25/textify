@@ -138,3 +138,7 @@
 .selected-language {
   @apply bg-neutral-800 text-white dark:bg-[#30467c];
 }
+
+.typography {
+  @apply text-neutral-900 dark:text-white font-bold;
+}
