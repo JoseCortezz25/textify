@@ -101,7 +101,7 @@
 }
 
 .selected-option .option-card__image {
-  @apply bg-neutral-700 text-white dark:bg-[#30467c];
+  @apply bg-[#262626] text-white dark:bg-[#30467c];
 }
 
 .frame {
@@ -136,7 +136,7 @@
 }
 
 .selected-language {
-  @apply bg-neutral-800 text-white dark:bg-[#30467c];
+  @apply bg-[#262626] text-white dark:bg-[#30467c];
 }
 
 .typography {

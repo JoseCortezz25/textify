@@ -14,10 +14,10 @@ import { generatePrompt } from "@/utils/prompts";
 import { FORMAT, LANGUAGE, LENGTH, TONES } from "@/utils/types";
 import { toast } from "sonner";
 import { ModeToggle } from "@/components/ModeToggle";
-import { Blog, Email, ListBullet, Paragraph } from "@/components/Icons";
+import { Blog, Email, ListBullet, Paragraph, TwitterX } from "@/components/Icons";
 import { OptionButton } from "@/components/OptionButton";
 import { LanguageOption } from "@/components/LanguageOption";
-import { Typography } from "@/components/typography";
+import { Typography } from "@/components/Typography";
 
 
 const TextareaSkeleton = () => {
@@ -195,6 +195,9 @@ export default function Home() {
               </OptionButton>
               <OptionButton label="Entrada de Blog" onClick={() => setFormat(FORMAT.BLOG)} selected={format === FORMAT.BLOG} >
                 <Blog />
+              </OptionButton>
+              <OptionButton label="Tweet" onClick={() => setFormat(FORMAT.TWEET)} selected={format === FORMAT.TWEET}>
+                <TwitterX />
               </OptionButton>
             </div>
 

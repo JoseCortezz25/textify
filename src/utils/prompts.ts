@@ -11,7 +11,16 @@ const formatPrompts = {
   email: 'El texto debe ser destinado a un correo electronico. Usa la estructura de un correo electronico.',
   ideas: 'El texto debe ser una lista de ideas, al estilo de bullet list.',
   blog: 'El texto debe ser con la estructura de una entrada de blog.',
-  linkedin: 'El texto debe ser con la estructura de una publicacion de LinkedIn.'
+  linkedin: 'El texto debe ser con la estructura de una publicacion de LinkedIn.',
+  tweet: 'El texto debe ser con la estructura de un tweet. No debes superar los 280 caracteres.'
+};
+
+const tonePrompts = {
+  profesional: 'El texto debe tener un tono profesional. Usar un lenguaje formal y respetuoso.',
+  informal: 'El texto debe tener un tono informal. Usar un lenguaje coloquial y amigable.',
+  entusiasta: 'El texto debe tener un tono entusiasta. Usar un lenguaje motivador y positivo.',
+  informativo: 'El texto debe tener un tono informativo. Usar un lenguaje claro y objetivo.',
+  divertido: 'El texto debe tener un tono divertido. Usar un lenguaje humoristico y amigable.'
 };
 
 export const generatePrompt = (
@@ -30,7 +39,7 @@ export const generatePrompt = (
   Instrucción:
   Desarrolla un texto en formato ${format} que refleje la esencia de la siguiente idea (input) 
   proporcionada por el usuario. Asegúrate de que el texto sea claro, persuasivo y adaptado 
-  al tono ${tone} para una presentación efectiva en línea.
+  al tono ${tone} para una presentación efectiva en línea. ${tonePrompts[tone]}
 
   Restricciones:
   - El texto debe tener un tono ${tone}.

@@ -12,7 +12,8 @@ export enum FORMAT {
   PARAGRAPH = "paragraph",
   EMAIL = "email",
   IDEAS = "ideas",
-  BLOG = "blog"
+  BLOG = "blog",
+  TWEET = "tweet",
 };
 
 export enum LENGTH {
