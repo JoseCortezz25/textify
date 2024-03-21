@@ -6,7 +6,6 @@ export enum TONES {
   ENTHUSIASTIC = "entusiasta",
   INFORMATIVE = "informativo",
   FUNNY = "divertido",
-  DOCUMENTATION = "documentacion"
 }
 
 export enum FORMAT {
@@ -15,6 +14,7 @@ export enum FORMAT {
   IDEAS = "ideas",
   BLOG = "blog",
   TWEET = "tweet",
+  DOCUMENTATION = "documentation"
 };
 
 export enum LENGTH {

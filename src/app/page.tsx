@@ -11,7 +11,7 @@ import { cn } from "@/utils/utils";
 import { FORMAT, LANGUAGE, LENGTH, TONES } from "@/utils/types";
 import { toast } from "sonner";
 import { ModeToggle } from "@/components/ModeToggle";
-import { Blog, Email, ListBullet, Paragraph, TwitterX } from "@/components/Icons";
+import { Blog, Documentation, Email, ListBullet, Paragraph, TwitterX } from "@/components/Icons";
 import { OptionButton } from "@/components/OptionButton";
 import { LanguageOption } from "@/components/LanguageOption";
 import { Typography } from "@/components/Typography";
@@ -166,11 +166,6 @@ export default function Home() {
                 <RadioGroupItem value="Divertido" id="r5" />
                 <Label htmlFor="r5" className="cursor-pointer">Divertido</Label>
               </div>
-
-              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.DOCUMENTATION)}>
-                <RadioGroupItem value="Documentación" id="r6" />
-                <Label htmlFor="r6" className="cursor-pointer">Documentación</Label>
-              </div>
             </RadioGroup>
           </div>
 
@@ -192,6 +187,9 @@ export default function Home() {
               </OptionButton>
               <OptionButton label="Tweet" onClick={() => setFormat(FORMAT.TWEET)} selected={format === FORMAT.TWEET}>
                 <TwitterX />
+              </OptionButton>
+              <OptionButton label="Documentación" onClick={() => setFormat(FORMAT.DOCUMENTATION)} selected={format === FORMAT.DOCUMENTATION}>
+                <Documentation />
               </OptionButton>
             </div>
 
