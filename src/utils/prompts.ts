@@ -20,7 +20,8 @@ const tonePrompts = {
   informal: 'El texto debe tener un tono informal. Usar un lenguaje coloquial y amigable.',
   entusiasta: 'El texto debe tener un tono entusiasta. Usar un lenguaje motivador y positivo.',
   informativo: 'El texto debe tener un tono informativo. Usar un lenguaje claro y objetivo.',
-  divertido: 'El texto debe tener un tono divertido. Usar un lenguaje humoristico y amigable.'
+  divertido: 'El texto debe tener un tono divertido. Usar un lenguaje humoristico y amigable.',
+  documentacion: 'El texto debe tener un tono de documentacion. Asegúrate de que la información sea clara, concisa y accesible para cualquier persona que pueda leerla. El objetivo es proporcionar una descripción informativa, sin utilizar jerga técnica o lenguaje complicado.'
 };
 
 export const generatePrompt = (

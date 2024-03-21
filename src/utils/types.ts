@@ -6,6 +6,7 @@ export enum TONES {
   ENTHUSIASTIC = "entusiasta",
   INFORMATIVE = "informativo",
   FUNNY = "divertido",
+  DOCUMENTATION = "documentacion"
 }
 
 export enum FORMAT {

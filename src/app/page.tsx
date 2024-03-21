@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -7,10 +6,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { placeholderExamples as placeholders } from "@/utils/data";
 import { Button } from "@/components/ui/button";
-import { ReactNode, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { cn } from "@/utils/utils";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { generatePrompt } from "@/utils/prompts";
 import { FORMAT, LANGUAGE, LENGTH, TONES } from "@/utils/types";
 import { toast } from "sonner";
 import { ModeToggle } from "@/components/ModeToggle";
@@ -18,6 +15,7 @@ import { Blog, Email, ListBullet, Paragraph, TwitterX } from "@/components/Icons
 import { OptionButton } from "@/components/OptionButton";
 import { LanguageOption } from "@/components/LanguageOption";
 import { Typography } from "@/components/Typography";
+import { fetchAltFromAI } from "@/services/fetch";
 
 
 const TextareaSkeleton = () => {
@@ -44,21 +42,7 @@ export default function Home() {
   const [language, setLanguage] = useState(LANGUAGE.SPANISH);
   const [error, setError] = useState({ error: false, message: '' });
 
-  const fetchAltFromAI = async () => {
-    try {
-      const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-      const result = await model.generateContent(generatePrompt(initialMessage, tone as TONES, length as LENGTH, format as FORMAT, language as LANGUAGE));
-      const response = await result.response;
-      const text = response.text();
-
-      return text as string;
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const onCopy = () => {
     if (!preview) return;
@@ -98,10 +82,15 @@ export default function Home() {
     setError({ error: false, message: '' });
     setLoading(true);
 
-    fetchAltFromAI()
+    fetchAltFromAI(
+      initialMessage,
+      tone,
+      length,
+      format,
+      language
+    )
       .then((text: any) => {
         setPreview(text);
-
       })
       .catch((error) => {
         console.error(error);
@@ -176,6 +165,11 @@ export default function Home() {
               <div className="flex items-center space-x-2" onClick={() => setTone(TONES.FUNNY)}>
                 <RadioGroupItem value="Divertido" id="r5" />
                 <Label htmlFor="r5" className="cursor-pointer">Divertido</Label>
+              </div>
+
+              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.DOCUMENTATION)}>
+                <RadioGroupItem value="Documentación" id="r6" />
+                <Label htmlFor="r6" className="cursor-pointer">Documentación</Label>
               </div>
             </RadioGroup>
           </div>
