@@ -41,8 +41,7 @@ export default function Home() {
   const [preview, setPreview] = useState('');
   const [language, setLanguage] = useState(LANGUAGE.SPANISH);
   const [error, setError] = useState({ error: false, message: '' });
-
-
+  const MAX_CHARACTERS = 4000;
 
   const onCopy = () => {
     if (!preview) return;
@@ -67,6 +66,7 @@ export default function Home() {
   };
 
   const handleTextArea = (target: any) => {
+    if (target.value.length > MAX_CHARACTERS) return;
     setCountText(target.value.length);
     setInitialMessage(target.value);
   };
@@ -134,8 +134,8 @@ export default function Home() {
           <div className="group-field">
             <Label htmlFor="message">Escribir sobre</Label>
             <div>
-              <Textarea placeholder={randomPlaceholder} id="message" rows={4} maxLength={1500} onChange={({ target }) => handleTextArea(target)} />
-              <p className={cn('text-[12px] mt-2', countText > 1400 && 'text-yellow-400', countText > 1450 && 'text-red-500')}><span>{countText}</span> / <span>1500</span></p>
+              <Textarea placeholder={randomPlaceholder} id="message" rows={4} maxLength={MAX_CHARACTERS} onChange={({ target }) => handleTextArea(target)} />
+              <p className={cn('text-[12px] mt-2', countText > MAX_CHARACTERS - 200 && 'text-yellow-400', countText > MAX_CHARACTERS - 50 && 'text-red-500')}><span>{countText}</span> / <span>{MAX_CHARACTERS}</span></p>
             </div>
           </div>
 
