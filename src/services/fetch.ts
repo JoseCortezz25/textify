@@ -10,11 +10,11 @@ const fetchAltFromAI = async (
   language: LANGUAGE
 ) => {
   try {
-    let attempts = parseInt(localStorage.getItem('attempts') || '0');
+    let attempts = parseInt(window.localStorage.getItem('attempts') || '0');
     attempts++;
-    localStorage.setItem('attempts', attempts.toString());
+    window.localStorage.setItem('attempts', attempts.toString());
 
-    let apiKey = localStorage.getItem('api_key');
+    let apiKey = window.localStorage.getItem('api_key');
 
     if (attempts >= 20 && !apiKey) {
       throw new Error('Por favor, ingresa tu propia API key.');
