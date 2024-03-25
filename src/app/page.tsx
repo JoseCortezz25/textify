@@ -16,6 +16,8 @@ import { OptionButton } from "@/components/OptionButton";
 import { LanguageOption } from "@/components/LanguageOption";
 import { Typography } from "@/components/Typography";
 import { fetchAltFromAI } from "@/services/fetch";
+import SheetButton from "@/components/SheetButton";
+import { ERROR_MESSAGES } from "@/utils/labels";
 
 
 const TextareaSkeleton = () => {
@@ -76,9 +78,17 @@ export default function Home() {
     previewTextArea.current?.scrollIntoView({ behavior: 'smooth' });
 
     if (!initialMessage || !tone || !format || !length) {
-      setError({ error: true, message: 'Todos los campos son obligatorios' });
+      setError({ error: true, message: ERROR_MESSAGES.EMPTY_FIELDS });
       return;
     }
+
+    const attempts = parseInt(localStorage.getItem('attempts') || '0');
+
+    if (attempts >= 5 && !localStorage.getItem('api_key')) {
+      setError({ error: true, message: ERROR_MESSAGES.MAX_ALLOWED_ATTTEMPTS });
+      return;
+    }
+
     setError({ error: false, message: '' });
     setLoading(true);
 
@@ -94,7 +104,7 @@ export default function Home() {
       })
       .catch((error) => {
         console.error(error);
-        setError({ error: true, message: 'Ocurrió un error al generar el borrador' });
+        setError({ error: true, message: ERROR_MESSAGES.ERROR_GENERATE_DRAFT });
         setPreview('');
       })
       .finally(() => {
@@ -107,14 +117,16 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between py-16 sm:py-24">
       <div className="max-w-[780px] mx-auto px-6 sm:px-4 md:px-0">
         <div className="max-w-[780px] w-full mx-auto space-y-3 mb-8 pb-9 border-b border-neutral-200">
-          <ModeToggle />
+          <div className="flex space-x-3">
+            <SheetButton />
+          </div>
           <h1 className="font-[600] text-3xl">Textify</h1>
           <p>Convierta tus ideas en borradores pulcros con facilidad, optimizando su tiempo y garantizando el tono adecuado, en cualquier plataforma de escritura en internet.</p>
           <a href="https://github.com/JoseCortezz25/textify" className="inline-block" target="_blank" rel="noopener noreferrer">
             <Button variant="outline" className="button-repo">
               <div className="text-black dark:text-white">
                 <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                     <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)" fill="currentColor">
                       <g id="icons" transform="translate(56.000000, 160.000000)">
                         <path d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399" id="github-[#142]">

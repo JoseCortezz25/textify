@@ -10,9 +10,22 @@ const fetchAltFromAI = async (
   language: LANGUAGE
 ) => {
   try {
-    const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    let attempts = parseInt(localStorage.getItem('attempts') || '0');
+    attempts++;
+    localStorage.setItem('attempts', attempts.toString());
 
+    let apiKey = localStorage.getItem('api_key');
+
+    if (attempts >= 20 && !apiKey) {
+      throw new Error('Por favor, ingresa tu propia API key.');
+    }
+
+    if (!apiKey) {
+      apiKey = process.env.NEXT_PUBLIC_API_KEY as string;
+    }
+
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const chat = model.startChat({
       history: [
         {
