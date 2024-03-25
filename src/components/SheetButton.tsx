@@ -1,6 +1,8 @@
+"use client";
+
 import { Settings } from "lucide-react";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
