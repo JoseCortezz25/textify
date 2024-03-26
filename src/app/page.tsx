@@ -107,11 +107,12 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-16 sm:py-24">
       <div className="max-w-[780px] mx-auto px-6 sm:px-4 md:px-0">
-        <div className="max-w-[780px] w-full mx-auto space-y-3 mb-8 pb-9 border-b border-neutral-200">
+        <div className="max-w-[780px] w-full mx-auto space-y-3">
           <SheetButton />
           <h1 className="font-[600] text-3xl">Textify</h1>
           <p>Convierta tus ideas en borradores pulcros con facilidad, optimizando su tiempo y garantizando el tono adecuado, en cualquier plataforma de escritura en internet.</p>
         </div>
+        <Separator className="my-10" />
 
         <div>
           <div className="group-field">
