@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat as FontSans } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import "./globals.css";
 
 const fontSans = FontSans({
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={fontSans.className}>
-        <GoogleTagManager gtmId={process.env.GA_TRACKING_ID as string} />
+        <GoogleAnalytics gaId={process.env.GA_TRACKING_ID as string} />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
