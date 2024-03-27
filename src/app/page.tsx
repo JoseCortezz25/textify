@@ -16,7 +16,7 @@ import { LanguageOption } from "@/components/LanguageOption";
 import { fetchAltFromAI } from "@/services/fetch";
 import SheetButton from "@/components/SheetButton";
 import { ERROR_MESSAGES } from "@/utils/labels";
-
+import { sendGTMEvent } from '@next/third-parties/google';
 
 const TextareaSkeleton = () => {
   return (
@@ -41,6 +41,7 @@ export default function Home() {
   const [preview, setPreview] = useState('');
   const [language, setLanguage] = useState(LANGUAGE.SPANISH);
   const [error, setError] = useState({ error: false, message: '' });
+
   const MAX_CHARACTERS = 4000;
 
   const onCopy = () => {
@@ -92,6 +93,7 @@ export default function Home() {
     )
       .then((text: any) => {
         setPreview(text);
+        sendGTMEvent({ event: 'GENERATE A NEW DRAFT', value: 'New draft' });
       })
       .catch((error) => {
         console.error(error);
