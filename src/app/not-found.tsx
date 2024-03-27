@@ -17,7 +17,9 @@ export default function NotFound() {
           <p>Pero no te preocupes, estamos aquí para ayudarte a encontrar el camino de vuelta.</p>
           <p className="mt-3">Haz clic en <mask className="underline font-semibold">Regresar al Home</mask> y continúa tu viaje digital. </p>
         </div>
-        <Button className="mt-4" variant="default">Regresar al Home</Button>
+        <Link href="/">
+          <Button className="mt-4" variant="default">Regresar al Home</Button>
+        </Link>
       </div>
     </div>
   );
