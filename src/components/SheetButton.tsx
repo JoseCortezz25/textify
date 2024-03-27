@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Label } from "./ui/label";
 import { ModeToggle } from "./ModeToggle";
+import { sendGAEvent } from '@next/third-parties/google';
 
 const SheetButton = () => {
 
@@ -24,7 +25,7 @@ const SheetButton = () => {
 
           <div className="mb-5">
             <a href="https://github.com/JoseCortezz25/textify" className="w-full" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="button-repo w-full">
+              <Button variant="link" className="button-repo w-full" onClick={() => sendGAEvent({ event: 'CLICKED BUTTON', value: 'See repo' })}>
                 <div className="text-black dark:text-white">
                   <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                     <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -38,7 +39,7 @@ const SheetButton = () => {
                     </g>
                   </svg>
                 </div>
-                <p>Repositorio</p>
+                <p>Creado por <b>@josecortezz25</b></p>
               </Button>
             </a>
           </div>

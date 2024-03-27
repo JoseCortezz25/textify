@@ -16,7 +16,7 @@ import { LanguageOption } from "@/components/LanguageOption";
 import { fetchAltFromAI } from "@/services/fetch";
 import SheetButton from "@/components/SheetButton";
 import { ERROR_MESSAGES } from "@/utils/labels";
-import { sendGTMEvent } from '@next/third-parties/google';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const TextareaSkeleton = () => {
   return (
@@ -93,7 +93,7 @@ export default function Home() {
     )
       .then((text: any) => {
         setPreview(text);
-        sendGTMEvent({ event: 'GENERATE A NEW DRAFT', value: 'New draft' });
+        sendGAEvent({ event: 'GENERATE A NEW DRAFT', value: 'New draft' });
       })
       .catch((error) => {
         console.error(error);
