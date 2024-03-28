@@ -142,3 +142,17 @@
 .typography {
   @apply text-neutral-900 dark:text-white font-bold;
 }
+
+.title-label {
+  @apply text-[17px] font-[700];
+}
+
+.label-container {
+  @apply flex items-center space-x-2;
+  @apply transition-all duration-200 ease-in-out;
+}
+
+
+.label-container:hover {
+  @apply scale-105;
+}

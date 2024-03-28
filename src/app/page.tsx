@@ -1,11 +1,6 @@
 "use client";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
+
 import { placeholderExamples as placeholders } from "@/utils/data";
-import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
 import { cn } from "@/utils/utils";
 import { FORMAT, LANGUAGE, LENGTH, TONES } from "@/utils/types";
@@ -17,6 +12,7 @@ import { fetchAltFromAI } from "@/services/fetch";
 import SheetButton from "@/components/SheetButton";
 import { ERROR_MESSAGES } from "@/utils/labels";
 import { sendGAEvent } from '@next/third-parties/google';
+import { Button, Label, RadioGroup, RadioGroupItem, Separator, Skeleton, Textarea } from "@/components/ui";
 
 const TextareaSkeleton = () => {
   return (
@@ -209,26 +205,6 @@ export default function Home() {
               <LanguageOption label="Portugues" icon="/icons/flag-brazil.svg" selected={language === LANGUAGE.PORTUGUESE} onClick={() => setLanguage(LANGUAGE.PORTUGUESE)} />
             </div>
           </div>
-
-          {/* <div className="group-field">
-            <Separator className="my-10" />
-            <Typography as="h2">Configuración complementaria</Typography>
-
-            <div className="group-field">
-              <Label htmlFor="target">Objetivo</Label>
-              <Textarea name="target" placeholder="Ingresa el objetivo del texto" />
-            </div>
-
-            <div className="group-field">
-              <Label htmlFor="audience">Audiencia</Label>
-              <Textarea name="audience" placeholder="Describe la audiencia" />
-            </div>
-
-            <div className="group-field">
-              <Label htmlFor="instructions">Intrucciones personalizadas</Label>
-              <Textarea name="instructions" placeholder="Describe tus instrucciones personalizadas para mejor resultados" />
-            </div>
-          </div> */}
 
           <div className="group-field">
             <Button onClick={onSubmit}>{!preview ? 'Generar borrador' : 'Generar otra versión'}</Button>

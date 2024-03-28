@@ -77,11 +77,23 @@ const Documentation = () => {
   );
 };
 
+const StarsAI = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="16px" y="16px" viewBox="0 0 16 16" xmlSpace="preserve">
+      <g id="Grupo_251862" transform="translate(-3296.512 1148.278)">
+        <path id="Trazado_491862" fill="currentColor" className="st0" d="M3305.2-1132.4c-0.07-4.11-3.46-7.38-7.57-7.31c4.11-0.07,7.38-3.46,7.31-7.56   c0,0,0,0,0,0c0.07,4.11,3.46,7.38,7.57,7.31C3308.4-1139.9,3305.13-1136.51,3305.2-1132.4" />
+        <path id="Trazado_491863" fill="currentColor" className="st0" d="M3299.58-1142.12c-0.03-1.67-1.4-2.99-3.07-2.97c1.67-0.03,2.99-1.4,2.97-3.07   c0.03,1.67,1.4,2.99,3.07,2.97C3300.88-1145.16,3299.55-1143.78,3299.58-1142.12" />
+      </g>
+    </svg>
+  );
+};
+
 export {
   Paragraph,
   Email,
   ListBullet,
   Blog,
   TwitterX,
-  Documentation
+  Documentation,
+  StarsAI
 };

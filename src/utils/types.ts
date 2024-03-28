@@ -1,5 +1,11 @@
 import { ReactNode } from "react";
 
+export enum TONE_DOCS {
+  CASUAL = "casual",
+  MODERATE = "moderate",
+  FORMAL = "formal"
+}
+
 export enum TONES {
   PROFESSIONAL = "profesional",
   INFORMAL = "informal",
