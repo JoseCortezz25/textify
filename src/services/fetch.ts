@@ -52,7 +52,7 @@ const fetchAltFromAI = async (
     return text as string;
 
   } catch (error) {
-    console.error(error);
+    throw new Error(error as string);
   }
 };
 
