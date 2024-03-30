@@ -1,9 +1,10 @@
+import { Part } from "@google/generative-ai";
 import { ReactNode } from "react";
 
 export enum TONE_DOCS {
-  CASUAL = "casual",
-  MODERATE = "moderate",
-  FORMAL = "formal"
+  CASUAL = "CASUAL",
+  OBJETIVE = "OBJETIVE",
+  FORMAL = "FORMAL"
 }
 
 export enum TONES {
@@ -53,3 +54,32 @@ export interface TypographyProps {
   as?: string;
   children?: ReactNode;
 }
+
+export type ResponseAI = {
+  message: {
+    candidates: CandidateResponse[];
+  };
+};
+
+type CandidateResponse = {
+  content: {
+    parts: PartResponse[];
+    role: string;
+  };
+  finishReason: string;
+  index: number;
+  safetyRatings: SafetyRating[];
+};
+
+type PartResponse = {
+  text: string;
+};
+
+type SafetyRating = {
+  category: string;
+  probability: string;
+};
+
+export type GenericPart = {
+  text: string;
+}[]
