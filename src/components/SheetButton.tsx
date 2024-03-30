@@ -24,7 +24,7 @@ const SheetButton = () => {
           </div>
 
           <div className="mb-5">
-            <a href="https://github.com/JoseCortezz25/textify" className="w-full" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/JoseCortezz25" className="w-full" target="_blank" rel="noopener noreferrer">
               <Button variant="link" className="button-repo w-full" onClick={() => sendGAEvent({ event: 'CLICKED BUTTON', value: 'See repo' })}>
                 <div className="text-black dark:text-white">
                   <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">

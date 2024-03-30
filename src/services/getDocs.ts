@@ -6,7 +6,12 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
 const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-const getGeneratedDocs = async (tone: TONE_DOCS, initialText: string, tools: TOOL[]) => {
+const getGeneratedDocs = async (
+  tone: TONE_DOCS,
+  initialText: string,
+  tools: TOOL[],
+  userInstructions: string
+) => {
   let generatedText;
   const generationConfig = {
     temperature: 0.9,
@@ -15,7 +20,7 @@ const getGeneratedDocs = async (tone: TONE_DOCS, initialText: string, tools: TOO
     maxOutputTokens: 4048
   };
 
-  const parts: any = generateParts(tone, initialText);
+  const parts: any = generateParts(tone, initialText, userInstructions);
 
   const result = await model.generateContent({
     contents: [{

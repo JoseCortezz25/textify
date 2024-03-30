@@ -1,6 +1,5 @@
 import { GenericPart, TONE_DOCS } from "./types";
 
-// placeholders para "Escribir sobre..."
 interface Placeholder {
   id: number;
   placeholder: string;
@@ -48,7 +47,6 @@ export const placeholderExamples: Placeholder[] = [
     placeholder: 'ideas para el próximo proyecto'
   }
 ];
-
 
 const informalParts: GenericPart = [
   { text: "Act like a grammatical and literary expert. Your mission is to convert any text into texts with a INFORMAL tone. To do this, modify its structure, tone, words, wording, and other grammatical elements in order to achieve this goal. Pay attention to the details and relationship of the words, as well as to the meaning so that the generated text keeps the same essence of the original text. The casual text should not be conversational." },
@@ -100,13 +98,61 @@ const formalParts: GenericPart = [
   { text: "output: Me dirijo a usted para expresarle mi profunda admiración por su excepcional actuación en el festival Primavera Sound. Su dominio del escenario y su interpretación cautivadora me dejaron una impresión imborrable.\n\nEsperanzado de que este mensaje llegue a sus manos, le aseguro que soy su admirador más ferviente. El recuerdo de su actuación suscita en mí una emoción inefable cada vez que viene a mi mente." }
 ];
 
-export const generateParts = (tone: TONE_DOCS, text: string) => {
+const objetiveParts: GenericPart = [
+  { text: "You are a grammar expert and your task is to rewrite the supplied text with a different tone. I am going to give you a text with an unknown tone, I need you to convert the text and modify it so that it has an OBJECTIVE tone. To do this, modify its structure, tone, words, wording and other grammatical elements in order to meet this objective. Pay attention to the details and relationship of the words, as well as the meaning so that the generated text retains the same essence of the original text. The casual text should not be conversational.\n\nTo create a text with an OBJECTIVE tone you should follow these instructions:\n* When we write to give information or facts without bias or personal opinions.\n* The construction of the text and its grammatical and stylistic resources aim to preserve a verifiable point of view.\n* Non-valorative adjectives (explanatory, demonstrative, etc.).\n* Verbs in the third person, impersonal, or first plural.\n* Most sentences appear in the indicative mood.\n* Generally, short sentences and little subordination are used.\n* Use of specific, technical or specialized lexicon.\n* Expository tone without opinions or reflections." },
+  { text: "input: Es increíble cómo de bien trabajado está el aspecto mental del Bayer Leverkusen.\n\nEn 2024 llevan SEIS partidos ganados o empatados en el minuto 90 o después.\n\nY en muchos casos con más de un gol en el tiempo añadido (Qarabag, Hoffenheim).\n\nNo es suerte. Es no perder la calma y saber seguir tu plan hasta el último minuto." },
+  { text: "output: El desempeño del Bayer Leverkusen en términos mentales resulta notable. Hasta el año 2024, han logrado mantenerse invictos en seis encuentros, ya sea ganando o empatando, después del minuto 90. En varios de estos casos, incluso han anotado más de un gol durante el tiempo añadido, como en los partidos contra Qarabag y Hoffenheim. Este éxito no puede atribuirse a la casualidad, sino más bien a la capacidad del equipo para conservar la compostura y ejecutar su estrategia hasta el último momento." },
+  { text: "input: Compartimos los resultados de un avance a pequeña escala de Voice Engine, un modelo que utiliza texto y una única muestra de audio de 15 segundos para generar un habla natural muy parecida a la del hablante original." },
+  { text: "output: Se presentan los resultados de una prueba piloto de Voice Engine, un modelo diseñado para producir un habla natural similar a la del hablante original utilizando únicamente un texto y una muestra de audio de 15 segundos." },
+  { text: "input: Escuche que en un informe de la Organización Internacional del Trabajo, el desempleo entre los que tienen título universitario es del 29,1%, mientras que entre los que no saben leer ni escribir es solo del 3,4%." },
+  { text: "output: El desempleo entre los titulados universitarios es del 29,1%, frente al 3,4% de los que no saben leer ni escribir, según un informe de la Organización Internacional del Trabajo." },
+  { text: "input: Probablemente recordemos \"Her\" como la película de ciencia ficción más acertada de nuestra generación.\n\nLos asistentes de inteligencia artificial personales (incluso íntimos), de contexto prolongado y siempre activos son una realidad." },
+  { text: "output: La película 'Her' se destaca como una representación notable de ciencia ficción en nuestra generación.Los asistentes de inteligencia artificial, que pueden ser personales e íntimos, con un contexto prolongado y una disponibilidad constante, son una realidad palpable en la actualidad.Recientemente, Hume.ai ha logrado un avance significativo al completar una pieza fundamental en este rompecabezas tecnológico." },
+  { text: "input: Muchos ven el ejercicio como una forma de quemar calorías o verse mejor en el espejo.\n\nY sirve para eso, por supuesto, pero también para mucho más.\n\nDe hecho, la mayor parte de sus beneficios no se pueden ver, solo se pueden sentir." },
+  { text: "output: El ejercicio físico es comúnmente percibido como un medio para quemar calorías y mejorar la apariencia física.Sin embargo, su utilidad va más allá de estos aspectos superficiales.La mayoría de los beneficios del ejercicio no son visibles a simple vista, sino que se experimentan a nivel interno." },
+  { text: "input: La economía se pegó un buen bajón en junio, fue la mayor caída del año con un 6,7% menos que en el mismo mes de 2017, así lo informó hoy el Indec. Aparte del efecto de la sequía, la economía también recibió un golpe por la devaluación fuerte, que afectó a la industria y a los negocios grandes y chicos." },
+  { text: "output: La actividad económica tuvo su mayor caída del año en junio, con una contracción de 6,7% con respecto al mismo mes de 2017, según informó hoy el Indec. Además de los efectos de la sequía, la actividad estuvo golpeada por la brusca devaluación, que impactó en la industria manufacturera y en los comercios mayoristas y minoristas." },
+  { text: "input: Ah, querida Andrée, qué difícil oponerse, aun aceptándolo con entera sumisión del propio ser, al orden minucioso que una mujer instaura en su liviana residencia. Cuán culpable tomar una tacita de metal y ponerla al otro extremo de la mesa, ponerla allí simplemente porque uno ha traído sus diccionarios ingleses y es de este lado, al alcance de la mano, donde habrán de estar. Mover esa tacita vale por un horrible rojo inesperado en medio de una modulación de Ozenfant, como si de golpe las cuerdas de todos los contrabajos se rompieran al mismo tiempo con el mismo espantoso chicotazo en el instante más callado de una sinfonía de Mozart" },
+  { text: "output: Resulta desafiante oponerse al meticuloso orden que una mujer establece en su hogar, incluso cuando se acepta con total conformidad. Es difícil resistirse a la tentación de desplazar una simple tacita de metal hacia el otro extremo de la mesa, solo porque uno ha traído sus diccionarios ingleses y es más práctico tenerlos al alcance de la mano. Sin embargo, mover esa tacita puede provocar una perturbadora sensación, comparable a un repentino y desafortunado contraste visual en medio de una composición de Ozenfant. Es como si de pronto todas las cuerdas de los contrabajos se rompieran simultáneamente con un impactante chirrido en el momento más sereno de una sinfonía de Mozart." },
+  { text: "input: El FMI publicó un informe que revela que la productividad total de los factores de Colombia ha caído y se ha estancado en las últimas tres décadas, la cual, junto con una mala asignación de recursos, afectó el crecimiento económico" },
+  { text: "output: Un informe del Fondo Monetario Internacional (FMI) indica que la productividad total de los factores (PTF) en Colombia ha experimentado una disminución y estancamiento durante las últimas tres décadas. Esta situación, junto con una deficiente asignación de recursos, ha tenido un impacto negativo en el crecimiento económico del país." }
+
+];
+
+export const generateParts = (
+  tone: TONE_DOCS,
+  text: string,
+  userInstructions: string
+) => {
+  const commonParts = [
+    { text: `input: ${text}` },
+    ...(userInstructions
+      ? [
+        { text: `input: User instructions to generate the text: [${userInstructions}]` },
+        { text: "output: " }
+      ] : [
+        { text: "output: " }
+      ])
+  ];
+
   if (tone === TONE_DOCS.FORMAL) {
-    const parts: GenericPart = [...formalParts, { text: `input: ${text}` }, { text: "output: " }];
-    return parts;
+    return [
+      ...formalParts,
+      ...commonParts
+    ];
   }
+
   if (tone === TONE_DOCS.CASUAL) {
-    const parts: GenericPart = [...informalParts, { text: `input: ${text}` }, { text: "output: " }];
-    return parts;
+    return [
+      ...informalParts,
+      ...commonParts
+    ];
+  }
+
+  if (tone === TONE_DOCS.OBJETIVE) {
+    return [
+      ...objetiveParts,
+      ...commonParts
+    ];
   }
 };
