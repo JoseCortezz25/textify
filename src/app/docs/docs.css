@@ -1,0 +1,15 @@
+.docs-page {
+  @apply flex flex-col lg:flex-row justify-between max-w-[1224px] mx-auto px-6 lg:px-6 py-16 sm:py-24;
+}
+
+.docs-page .left-column {
+  @apply w-full lg:w-[25%];
+} 
+
+.docs-page .right-column {
+  @apply w-full lg:w-[70%];
+}
+
+.title-docs {
+  @apply mt-3 font-[600] text-3xl;
+}

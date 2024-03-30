@@ -110,6 +110,3 @@ export const generateParts = (tone: TONE_DOCS, text: string) => {
     return parts;
   }
 };
-
-// { text: "input: " },
-// { text: "output: " }

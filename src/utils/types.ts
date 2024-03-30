@@ -83,3 +83,9 @@ type SafetyRating = {
 export type GenericPart = {
   text: string;
 }[]
+
+export enum TOOL {
+  GRAMMAR = 'grammatical',
+  STRUCTURE = 'structure',
+  CONDENSE = 'condense'
+}

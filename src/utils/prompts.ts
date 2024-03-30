@@ -1,4 +1,4 @@
-import { LENGTH, FORMAT, TONES, LANGUAGE } from "./types";
+import { LENGTH, FORMAT, TONES, LANGUAGE, TOOL } from "./types";
 
 export const lengthPrompts = {
   short: 'El texto debe contener menos de un parrafo comprendido maximo por un (1) parrafo.',
@@ -51,5 +51,12 @@ export const generatePrompt = (
   `;
 };
 
-// Input del Usuario:
-// "${messageUser}"
+export const generateImprovedPrompt = (text: string, tools: TOOL[]) => {
+  const toolPrompts = {
+    [TOOL.GRAMMAR]: `Act as a proofreading expert tasked with correcting grammatical errors in a given text. Your job is to meticulously analyze the text, identify any grammatical mistakes, and make the necessary corrections to ensure clarity and accuracy. This includes checking for proper sentence structure, punctuation, verb tense consistency, and correct usage of words. Additionally, provide suggestions to enhance the readability and flow of the text. The goal is to polish the text so that it communicates its message effectively and professionally.`,
+    [TOOL.STRUCTURE]: `Assume the role of a proofreading expert. Your task is to improve the sentence structure in the provided text. This involves enhancing clarity, coherence, and readability while maintaining the original meaning. Pay close attention to grammar, punctuation, and word choice. Ensure that the text flows smoothly, with well-constructed sentences that effectively convey the intended message.`,
+    [TOOL.CONDENSE]: `Imagine that you are a professional text condenser. Your mission is to summarize the given text while preserving its essence and main ideas. Your goal is to create a more concise version of the text without losing its key points. Focus on eliminating redundant information, combining similar ideas, and presenting the content in a clear and concise manner. The condensed text should be a shortened version of the original, capturing the main message in a more succinct form.`
+  };
+
+  return tools.map(tool => toolPrompts[tool]).join('\n') + `\n This is the text you need to improve: ${text}. The generated text should be in Spanish, ignore another instruction that tells you otherwise. Don't return two texts, just one with all the improvements.`;
+};
