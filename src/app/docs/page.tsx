@@ -2,17 +2,18 @@
 
 import { StarsAI } from "@/components/Icons";
 import SheetButton from "@/components/SheetButton";
-import { Alert, AlertDescription, AlertTitle, Button, Input, Label, Separator, Switch, Textarea } from "@/components/ui";
+import { Alert, AlertDescription, Button, Input, Label, Separator, Switch, Textarea } from "@/components/ui";
 import { ResponseAI, TONE_DOCS, TOOL } from "@/utils/types";
 import { cn } from "@/utils/utils";
 import { Copy, FileDown } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { getGeneratedDocs } from "@/services/getDocs";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import Loader from "@/components/Loader";
 import ImageVisualizer from "@/components/ImageVisualizer";
-import './docs.css';
 import { toast } from "sonner";
+import { useGSAP } from "@gsap/react";
+import './docs.css';
+import gsap from "gsap";
 
 const PageDocs = () => {
   const [tone, setTone] = useState(TONE_DOCS.FORMAL);
@@ -149,6 +150,16 @@ const PageDocs = () => {
     }
   };
 
+  useGSAP(() => {
+    gsap.to('#stars-loader-animation', {
+      duration: 1,
+      scale: 1.7,
+      yoyo: true,
+      repeat: -1,
+      ease: 'power1.inOut'
+    });
+  }, []);
+
   return (
     <div className="docs-page">
       <div className="left-column">
@@ -261,8 +272,11 @@ const PageDocs = () => {
             </div>
           </div>
         ) : (
-          <div className="w-full h-[30vh] flex justify-center items-center">
-            <Loader />
+          <div className="w-full h-[30vh] flex flex-col justify-center items-center">
+            <div className="size-20 text-center" id="stars-loader-animation">
+              <StarsAI />
+            </div>
+            <p className="mt-10">Generando...</p>
           </div>
         )}
       </div>
