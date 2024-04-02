@@ -31,7 +31,6 @@ const PageDocs = () => {
 
   const fetchAI = async () => {
     const formData = new FormData();
-    console.log('imageFile', imageFile);
 
     formData.append('image', imageFile as File);
 
@@ -124,7 +123,6 @@ const PageDocs = () => {
   };
 
   const handleTextArea = (message: string) => {
-    console.log('message lenght', message.length);
 
     if (message.length >= MAX_CHARACTERS) return;
     setInitialMessage(message);

@@ -9,7 +9,7 @@ const ImageVisualizer = ({ image }: { image: MediaSource | Blob }) => {
       <DialogTrigger asChild>
         <Button variant="outline"><Eye /></Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[90%] sm:h-[80vh] p-6">
+      <DialogContent className=" sm:max-w-[90%] h-[80vh] p-6">
         <div className="w-[90%] h-[90%]">
           <Image src={URL.createObjectURL(image)} alt="See Icon" fill className="object-contain" />
         </div>
