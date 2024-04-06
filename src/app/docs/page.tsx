@@ -297,20 +297,24 @@ const PageDocs = () => {
               onChange={({ target }) => setGeneratedText(target.value)}
             />
             <div className="space-x-4">
-              <Button variant="secondary" className="space-x-3" onClick={onGetNewVersion}>
-                <div className="size-4 text-black dark:text-white ">
-                  <StarsAI />
-                </div>
-                <span>Generar nueva versión</span>
-              </Button>
+              {generatedText && (
+                <Button variant="secondary" className="space-x-3" onClick={onGetNewVersion}>
+                  <div className="size-4 text-black dark:text-white ">
+                    <StarsAI />
+                  </div>
+                  <span>Generar nueva versión</span>
+                </Button>
+              )}
               <Button variant="secondary" className="space-x-3" onClick={onCopy}>
                 <Copy size={16} />
                 <span>Copiar</span>
               </Button>
-              <Button variant="secondary" className="space-x-3" onClick={onClear}>
-                <Trash2 size={16} />
-                <span>Limpiar</span>
-              </Button>
+              {generatedText && (
+                <Button variant="secondary" className="space-x-3" onClick={onClear}>
+                  <Trash2 size={16} />
+                  <span>Limpiar</span>
+                </Button>
+              )}
             </div>
           </div>
         ) : (

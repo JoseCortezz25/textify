@@ -128,7 +128,9 @@ export const generateParts = (
     { text: `input: ${text}` },
     ...(userInstructions
       ? [
-        { text: `input: User instructions to generate the text: [${userInstructions}]` },
+        {
+          text: `input: User instructions to generate the requested text: ${userInstructions}. Do not write this part. It is only an instruction for you.`
+        },
         { text: "output: " }
       ] : [
         { text: "output: " }
