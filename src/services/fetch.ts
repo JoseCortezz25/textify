@@ -2,12 +2,13 @@ import { formatPrompts, lengthPrompts, tonePrompts } from "@/utils/prompts";
 import { FORMAT, LANGUAGE, LENGTH, TONES } from "@/utils/types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const fetchAltFromAI = async (
+const fetchTextFromAI = async (
   initialMessage: string,
   tone: TONES,
   length: LENGTH,
   format: FORMAT,
-  language: LANGUAGE
+  language: LANGUAGE,
+  generatedText?: string
 ) => {
   try {
     const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
@@ -46,7 +47,11 @@ const fetchAltFromAI = async (
         }
       ]
     });
-    const result = await chat.sendMessage(initialMessage);
+
+    const promptToGenerate = `Instrucción del usuario: ${initialMessage}
+    Texto base para crear el nuevo contenido: ${generatedText}`;
+
+    const result = await chat.sendMessage(generatedText ? promptToGenerate : initialMessage);
     const response = await result.response;
     const text = response.text();
     return text as string;
@@ -57,5 +62,5 @@ const fetchAltFromAI = async (
 };
 
 export {
-  fetchAltFromAI
+  fetchTextFromAI
 };

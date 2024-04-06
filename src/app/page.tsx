@@ -11,11 +11,12 @@ import {
   Email,
   ListBullet,
   Paragraph,
+  StarsAI,
   TwitterX
 } from '@/components/Icons';
 import { OptionButton } from '@/components/OptionButton';
 import { LanguageOption } from '@/components/LanguageOption';
-import { fetchAltFromAI } from '@/services/fetch';
+import { fetchTextFromAI } from '@/services/fetch';
 import SheetButton from '@/components/SheetButton';
 import { ERROR_MESSAGES } from '@/utils/labels';
 import { sendGAEvent } from '@next/third-parties/google';
@@ -28,6 +29,7 @@ import {
   Skeleton,
   Textarea
 } from '@/components/ui';
+import { Copy, Trash2 } from 'lucide-react';
 
 const TextareaSkeleton = () => {
   return (
@@ -73,8 +75,9 @@ export default function Home() {
     setCountText(0);
 
     setError({ error: false, message: '' });
-    if (!previewTextArea.current) return;
-    previewTextArea.current.defaultValue = '';
+    if (previewTextArea.current) previewTextArea.current.value = '';
+
+    toast.success('Texto limpiado');
   };
 
   const handleTextArea = (target: any) => {
@@ -95,7 +98,31 @@ export default function Home() {
     setError({ error: false, message: '' });
     setLoading(true);
 
-    fetchAltFromAI(initialMessage, tone, length, format, language)
+    fetchTextFromAI(initialMessage, tone, length, format, language, preview)
+      .then((text: any) => {
+        setPreview(text);
+        sendGAEvent({ event: 'GENERATE A NEW DRAFT', value: 'New draft' });
+      })
+      .catch((error) => {
+        console.error(error);
+        setError({ error: true, message: ERROR_MESSAGES.ERROR_GENERATE_DRAFT });
+        setPreview('');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const onGenerateNewVersion = () => {
+    if (!initialMessage || !tone || !format || !length) {
+      setError({ error: true, message: ERROR_MESSAGES.EMPTY_FIELDS });
+      return;
+    }
+
+    setError({ error: false, message: '' });
+    setLoading(true);
+
+    fetchTextFromAI(initialMessage, tone, length, format, language)
       .then((text: any) => {
         setPreview(text);
         sendGAEvent({ event: 'GENERATE A NEW DRAFT', value: 'New draft' });
@@ -136,6 +163,7 @@ export default function Home() {
                 rows={4}
                 maxLength={MAX_CHARACTERS}
                 onChange={({ target }) => handleTextArea(target)}
+                value={initialMessage}
               />
               <p
                 className={cn(
@@ -330,7 +358,7 @@ export default function Home() {
 
           <div className="group-field">
             <Button onClick={onSubmit}>
-              {!preview ? 'Generar borrador' : 'Generar otra versión'}
+              Generar borrador
             </Button>
           </div>
 
@@ -356,13 +384,24 @@ export default function Home() {
                 />
                 <div className="flex space-x-3">
                   <Button
-                    variant="secondary" className="mt-4" onClick={onCopy}>
-                    Copiar
+                    variant="secondary" className="mt-4 space-x-2" onClick={onCopy}>
+                    <Copy className='size-4' />
+                    <span>Copiar</span>
                   </Button>
                   <Button
-                    variant="outline" className="mt-4" onClick={onClear}>
-                    Limpiar
+                    variant="secondary" className="mt-4 space-x-2" onClick={onClear}>
+                    <Trash2 className='size-4' />
+                    <span>Limpiar</span>
                   </Button>
+                  {preview && (
+                    <Button
+                      variant="secondary" className="mt-4 space-x-2" onClick={onGenerateNewVersion}>
+                      <div className="size-4 text-black dark:text-white">
+                        <StarsAI />
+                      </div>
+                      <span>Generar otra versión</span>
+                    </Button>
+                  )}
                 </div>
               </>
             )}
