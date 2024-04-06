@@ -46,14 +46,14 @@ const getGeneratedDocs = async (
 
 const generateNewVersion = async (
   tone: TONE_DOCS,
-  initialText: string,
+  initialGeneratedText: string,
   tools: TOOL[],
   userInstructions: string
 ) => {
   let generatedText;
 
   // generate new version based on generated text and tones
-  const parts: any = generateParts(tone, initialText, userInstructions);
+  const parts: any = generateParts(tone, initialGeneratedText, userInstructions);
 
   const result = await model.generateContent({
     contents: [{
