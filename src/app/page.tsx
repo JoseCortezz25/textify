@@ -1,18 +1,33 @@
-"use client";
+'use client';
 
-import { placeholderExamples as placeholders } from "@/utils/data";
-import { useRef, useState } from "react";
-import { cn } from "@/utils/utils";
-import { FORMAT, LANGUAGE, LENGTH, TONES } from "@/utils/types";
-import { toast } from "sonner";
-import { Blog, Documentation, Email, ListBullet, Paragraph, TwitterX } from "@/components/Icons";
-import { OptionButton } from "@/components/OptionButton";
-import { LanguageOption } from "@/components/LanguageOption";
-import { fetchAltFromAI } from "@/services/fetch";
-import SheetButton from "@/components/SheetButton";
-import { ERROR_MESSAGES } from "@/utils/labels";
+import { placeholderExamples as placeholders } from '@/utils/data';
+import { useRef, useState } from 'react';
+import { cn } from '@/utils/utils';
+import { FORMAT, LANGUAGE, LENGTH, TONES } from '@/utils/types';
+import { toast } from 'sonner';
+import {
+  Blog,
+  Documentation,
+  Email,
+  ListBullet,
+  Paragraph,
+  TwitterX
+} from '@/components/Icons';
+import { OptionButton } from '@/components/OptionButton';
+import { LanguageOption } from '@/components/LanguageOption';
+import { fetchAltFromAI } from '@/services/fetch';
+import SheetButton from '@/components/SheetButton';
+import { ERROR_MESSAGES } from '@/utils/labels';
 import { sendGAEvent } from '@next/third-parties/google';
-import { Button, Label, RadioGroup, RadioGroupItem, Separator, Skeleton, Textarea } from "@/components/ui";
+import {
+  Button,
+  Label,
+  RadioGroup,
+  RadioGroupItem,
+  Separator,
+  Skeleton,
+  Textarea
+} from '@/components/ui';
 
 const TextareaSkeleton = () => {
   return (
@@ -80,13 +95,7 @@ export default function Home() {
     setError({ error: false, message: '' });
     setLoading(true);
 
-    fetchAltFromAI(
-      initialMessage,
-      tone,
-      length,
-      format,
-      language
-    )
+    fetchAltFromAI(initialMessage, tone, length, format, language)
       .then((text: any) => {
         setPreview(text);
         sendGAEvent({ event: 'GENERATE A NEW DRAFT', value: 'New draft' });
@@ -101,14 +110,19 @@ export default function Home() {
       });
   };
 
-  const randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)].placeholder;
+  const randomPlaceholder =
+    placeholders[Math.floor(Math.random() * placeholders.length)].placeholder;
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-16 sm:py-24">
-      <div className="max-w-[780px] mx-auto px-6 sm:px-4 md:px-0">
-        <div className="max-w-[780px] w-full mx-auto space-y-3">
+      <div className="mx-auto max-w-[780px] px-6 sm:px-4 md:px-0">
+        <div className="mx-auto w-full max-w-[780px] space-y-3">
           <SheetButton />
-          <h1 className="font-[600] text-3xl">Textify</h1>
-          <p>Convierte tus ideas en borradores pulcros con facilidad, optimizando tu tiempo y garantizando el tono adecuado, en cualquier plataforma de escritura en internet.</p>
+          <h1 className="text-3xl font-[600]">Textify</h1>
+          <p>
+            Convierte tus ideas en borradores pulcros con facilidad, optimizando
+            tu tiempo y garantizando el tono adecuado, en cualquier plataforma
+            de escritura en internet.
+          </p>
         </div>
         <Separator className="my-10" />
 
@@ -116,37 +130,86 @@ export default function Home() {
           <div className="group-field">
             <Label htmlFor="message">Escribir sobre</Label>
             <div>
-              <Textarea placeholder={randomPlaceholder} id="message" rows={4} maxLength={MAX_CHARACTERS} onChange={({ target }) => handleTextArea(target)} />
-              <p className={cn('text-[12px] mt-2', countText > MAX_CHARACTERS - 200 && 'text-yellow-400', countText > MAX_CHARACTERS - 50 && 'text-red-500')}><span>{countText}</span> / <span>{MAX_CHARACTERS}</span></p>
+              <Textarea
+                placeholder={randomPlaceholder}
+                id="message"
+                rows={4}
+                maxLength={MAX_CHARACTERS}
+                onChange={({ target }) => handleTextArea(target)}
+              />
+              <p
+                className={cn(
+                  'mt-2 text-[12px]',
+                  countText > MAX_CHARACTERS - 200 && 'text-yellow-400',
+                  countText > MAX_CHARACTERS - 50 && 'text-red-500'
+                )}
+              >
+                <span>{countText}</span> / <span>{MAX_CHARACTERS}</span>
+              </p>
             </div>
           </div>
 
           <div className="group-field">
             <Label htmlFor="message">Elige el tono</Label>
-            <RadioGroup className="flex gap-[20px] flex-wrap" >
-              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.PROFESSIONAL)}>
-                <RadioGroupItem value="Profesional" id="r1" />
-                <Label htmlFor="r1" className="cursor-pointer">Profesional</Label>
+            <RadioGroup className="flex flex-wrap gap-[20px]">
+              <div
+                className="flex items-center space-x-2"
+                onClick={() => setTone(TONES.PROFESSIONAL)}
+              >
+                <RadioGroupItem
+                  value="Profesional" id="r1" />
+                <Label
+                  htmlFor="r1" className="cursor-pointer">
+                  Profesional
+                </Label>
               </div>
 
-              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.INFORMAL)}>
-                <RadioGroupItem value="Informal" id="r2" />
-                <Label htmlFor="r2" className="cursor-pointer">Informal</Label>
+              <div
+                className="flex items-center space-x-2"
+                onClick={() => setTone(TONES.INFORMAL)}
+              >
+                <RadioGroupItem
+                  value="Informal" id="r2" />
+                <Label
+                  htmlFor="r2" className="cursor-pointer">
+                  Informal
+                </Label>
               </div>
 
-              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.ENTHUSIASTIC)}>
-                <RadioGroupItem value="Entusiasta" id="r3" />
-                <Label htmlFor="r3" className="cursor-pointer">Entusiasta</Label>
+              <div
+                className="flex items-center space-x-2"
+                onClick={() => setTone(TONES.ENTHUSIASTIC)}
+              >
+                <RadioGroupItem
+                  value="Entusiasta" id="r3" />
+                <Label
+                  htmlFor="r3" className="cursor-pointer">
+                  Entusiasta
+                </Label>
               </div>
 
-              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.INFORMATIVE)}>
-                <RadioGroupItem value="Informativo" id="r4" />
-                <Label htmlFor="r4" className="cursor-pointer">Informativo</Label>
+              <div
+                className="flex items-center space-x-2"
+                onClick={() => setTone(TONES.INFORMATIVE)}
+              >
+                <RadioGroupItem
+                  value="Informativo" id="r4" />
+                <Label
+                  htmlFor="r4" className="cursor-pointer">
+                  Informativo
+                </Label>
               </div>
 
-              <div className="flex items-center space-x-2" onClick={() => setTone(TONES.FUNNY)}>
-                <RadioGroupItem value="Divertido" id="r5" />
-                <Label htmlFor="r5" className="cursor-pointer">Divertido</Label>
+              <div
+                className="flex items-center space-x-2"
+                onClick={() => setTone(TONES.FUNNY)}
+              >
+                <RadioGroupItem
+                  value="Divertido" id="r5" />
+                <Label
+                  htmlFor="r5" className="cursor-pointer">
+                  Divertido
+                </Label>
               </div>
             </RadioGroup>
           </div>
@@ -155,79 +218,154 @@ export default function Home() {
             <Label htmlFor="message">Formato</Label>
 
             <div className="flex flex-wrap gap-[25px]">
-              <OptionButton label="Párrafo" onClick={() => setFormat(FORMAT.PARAGRAPH)} selected={format === FORMAT.PARAGRAPH}>
+              <OptionButton
+                label="Párrafo"
+                onClick={() => setFormat(FORMAT.PARAGRAPH)}
+                selected={format === FORMAT.PARAGRAPH}
+              >
                 <Paragraph />
               </OptionButton>
-              <OptionButton label="Correo Electrónico" onClick={() => setFormat(FORMAT.EMAIL)} selected={format === FORMAT.EMAIL} >
+              <OptionButton
+                label="Correo Electrónico"
+                onClick={() => setFormat(FORMAT.EMAIL)}
+                selected={format === FORMAT.EMAIL}
+              >
                 <Email />
               </OptionButton>
-              <OptionButton label="Ideas" onClick={() => setFormat(FORMAT.IDEAS)} selected={format === FORMAT.IDEAS}>
+              <OptionButton
+                label="Ideas"
+                onClick={() => setFormat(FORMAT.IDEAS)}
+                selected={format === FORMAT.IDEAS}
+              >
                 <ListBullet />
               </OptionButton>
-              <OptionButton label="Entrada de Blog" onClick={() => setFormat(FORMAT.BLOG)} selected={format === FORMAT.BLOG} >
+              <OptionButton
+                label="Entrada de Blog"
+                onClick={() => setFormat(FORMAT.BLOG)}
+                selected={format === FORMAT.BLOG}
+              >
                 <Blog />
               </OptionButton>
-              <OptionButton label="Tweet" onClick={() => setFormat(FORMAT.TWEET)} selected={format === FORMAT.TWEET}>
+              <OptionButton
+                label="Tweet"
+                onClick={() => setFormat(FORMAT.TWEET)}
+                selected={format === FORMAT.TWEET}
+              >
                 <TwitterX />
               </OptionButton>
-              <OptionButton label="Documentación" onClick={() => setFormat(FORMAT.DOCUMENTATION)} selected={format === FORMAT.DOCUMENTATION}>
+              <OptionButton
+                label="Documentación"
+                onClick={() => setFormat(FORMAT.DOCUMENTATION)}
+                selected={format === FORMAT.DOCUMENTATION}
+              >
                 <Documentation />
               </OptionButton>
             </div>
-
           </div>
 
           <div className="group-field">
             <Label htmlFor="message">Logitud</Label>
-            <RadioGroup className="flex gap-[20px] flex-wrap">
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength(LENGTH.SHORT)}>
-                <RadioGroupItem value="Corto" id="r-corto" />
-                <Label htmlFor="r-corto" className="cursor-pointer">Corto</Label>
+            <RadioGroup className="flex flex-wrap gap-[20px]">
+              <div
+                className="flex cursor-pointer items-center space-x-2"
+                onClick={() => setLength(LENGTH.SHORT)}
+              >
+                <RadioGroupItem
+                  value="Corto" id="r-corto" />
+                <Label
+                  htmlFor="r-corto" className="cursor-pointer">
+                  Corto
+                </Label>
               </div>
 
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength(LENGTH.MEDIUM)}>
-                <RadioGroupItem value="Medio" id="r-medio" />
-                <Label htmlFor="r-medio" className="cursor-pointer">Medio</Label>
+              <div
+                className="flex cursor-pointer items-center space-x-2"
+                onClick={() => setLength(LENGTH.MEDIUM)}
+              >
+                <RadioGroupItem
+                  value="Medio" id="r-medio" />
+                <Label
+                  htmlFor="r-medio" className="cursor-pointer">
+                  Medio
+                </Label>
               </div>
 
-              <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setLength(LENGTH.LONG)}>
-                <RadioGroupItem value="Largo" id="r-largo" />
-                <Label htmlFor="r-largo" className="cursor-pointer">Largo</Label>
+              <div
+                className="flex cursor-pointer items-center space-x-2"
+                onClick={() => setLength(LENGTH.LONG)}
+              >
+                <RadioGroupItem
+                  value="Largo" id="r-largo" />
+                <Label
+                  htmlFor="r-largo" className="cursor-pointer">
+                  Largo
+                </Label>
               </div>
             </RadioGroup>
           </div>
 
           <div className="group-field">
             <Label htmlFor="message">Idioma</Label>
-            <div className="w-full flex flex-wrap gap-5">
-              <LanguageOption label="Español" icon="/icons/flag-colombia.svg" selected={language === LANGUAGE.SPANISH} onClick={() => setLanguage(LANGUAGE.SPANISH)} />
-              <LanguageOption label="Inglés" icon="/icons/flag-united-states.svg" selected={language === LANGUAGE.ENGLISH} onClick={() => setLanguage(LANGUAGE.ENGLISH)} />
-              <LanguageOption label="Portugues" icon="/icons/flag-brazil.svg" selected={language === LANGUAGE.PORTUGUESE} onClick={() => setLanguage(LANGUAGE.PORTUGUESE)} />
+            <div className="flex w-full flex-wrap gap-5">
+              <LanguageOption
+                label="Español"
+                icon="/icons/flag-colombia.svg"
+                selected={language === LANGUAGE.SPANISH}
+                onClick={() => setLanguage(LANGUAGE.SPANISH)}
+              />
+              <LanguageOption
+                label="Inglés"
+                icon="/icons/flag-united-states.svg"
+                selected={language === LANGUAGE.ENGLISH}
+                onClick={() => setLanguage(LANGUAGE.ENGLISH)}
+              />
+              <LanguageOption
+                label="Portugues"
+                icon="/icons/flag-brazil.svg"
+                selected={language === LANGUAGE.PORTUGUESE}
+                onClick={() => setLanguage(LANGUAGE.PORTUGUESE)}
+              />
             </div>
           </div>
 
           <div className="group-field">
-            <Button onClick={onSubmit}>{!preview ? 'Generar borrador' : 'Generar otra versión'}</Button>
+            <Button onClick={onSubmit}>
+              {!preview ? 'Generar borrador' : 'Generar otra versión'}
+            </Button>
           </div>
 
           <div className="mt-10">
-            {error.error && <p className="text-red-500 font-bold">{error.message}</p>}
+            {error.error && (
+              <p className="font-bold text-red-500">{error.message}</p>
+            )}
           </div>
 
           <Separator className="my-10" />
 
           <div className="group-field">
             <Label>Vista previa</Label>
-            {loading ? <TextareaSkeleton /> : (
+            {loading ? (
+              <TextareaSkeleton />
+            ) : (
               <>
-                <Textarea ref={previewTextArea} placeholder="Aqui estará tu borrador generado" rows={8} defaultValue={preview} />
+                <Textarea
+                  ref={previewTextArea}
+                  placeholder="Aqui estará tu borrador generado"
+                  rows={8}
+                  defaultValue={preview}
+                />
                 <div className="flex space-x-3">
-                  <Button variant="secondary" className="mt-4" onClick={onCopy}>Copiar</Button>
-                  <Button variant="outline" className="mt-4" onClick={onClear}>Limpiar</Button>
+                  <Button
+                    variant="secondary" className="mt-4" onClick={onCopy}>
+                    Copiar
+                  </Button>
+                  <Button
+                    variant="outline" className="mt-4" onClick={onClear}>
+                    Limpiar
+                  </Button>
                 </div>
               </>
             )}
-
           </div>
         </div>
       </div>
