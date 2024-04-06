@@ -5,15 +5,13 @@ import SheetButton from "@/components/SheetButton";
 import { Alert, AlertDescription, Button, Input, Label, Separator, Switch, Textarea } from "@/components/ui";
 import { ResponseAI, TONE_DOCS, TOOL } from "@/utils/types";
 import { cn } from "@/utils/utils";
-import { Copy, FileDown } from "lucide-react";
-import { ChangeEvent, useState } from "react";
-import { getGeneratedDocs } from "@/services/getDocs";
+import { Copy, Trash2 } from "lucide-react";
+import { ChangeEvent, useRef, useState } from "react";
+import { generateNewVersion, getGeneratedDocs } from "@/services/getDocs";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import ImageVisualizer from "@/components/ImageVisualizer";
 import { toast } from "sonner";
-import { useGSAP } from "@gsap/react";
 import './docs.css';
-import gsap from "gsap";
 
 const PageDocs = () => {
   const [tone, setTone] = useState(TONE_DOCS.FORMAL);
@@ -27,6 +25,7 @@ const PageDocs = () => {
   });
   const [loading, setLoading] = useState(false);
   const [countText, setCountText] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_CHARACTERS = 5500;
 
   const fetchAI = async () => {
@@ -36,7 +35,7 @@ const PageDocs = () => {
 
     try {
       const result = await fetch('/api/docs/images', {
-        method: 'POST', // Cambia el método a POST
+        method: 'POST',
         body: formData
       });
 
@@ -148,15 +147,41 @@ const PageDocs = () => {
     }
   };
 
-  useGSAP(() => {
-    gsap.to('#stars-loader-animation', {
-      duration: 1,
-      scale: 1.7,
-      yoyo: true,
-      repeat: -1,
-      ease: 'power1.inOut'
-    });
-  }, []);
+  const onGetNewVersion = async () => {
+    try {
+      if (!generatedText) return;
+
+      setLoading(true);
+      const result = await generateNewVersion(tone, generatedText, tools || [], initialMessage);
+
+      setGeneratedText(result);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading(false);
+      setError({
+        message: 'Error al generar el texto',
+        show: true
+      });
+    }
+  };
+
+  const onClear = () => {
+    setInitialMessage('');
+    setGeneratedText('');
+    setImageFile(null);
+    setCountText(0);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    toast.success('Contenido limpiado');
+  };
+
+  const handleGeneratedText = (text: string) => {
+    setGeneratedText(text);
+  }
 
   return (
     <div className="docs-page">
@@ -222,22 +247,28 @@ const PageDocs = () => {
             placeholder="Añade instrucciones complementarias"
             onChange={({ target }) => handleTextArea(target.value)}
             maxLength={MAX_CHARACTERS}
+            value={initialMessage}
           />
           <p className={cn('text-[12px] mt-2', countText > MAX_CHARACTERS - 200 && 'text-yellow-400', countText > MAX_CHARACTERS - 50 && 'text-red-500')}><span>{countText}</span> / <span>{MAX_CHARACTERS}</span></p>
         </div>
         <div className="group-field -mt-5">
           <Label>Sube las imagenes de contexto</Label>
           <div className="flex gap-2">
-            <Input type="file" accept="jpg,png,jpeg,webp" onChange={setHandleImages} />
+            <Input
+              type="file"
+              accept="jpg,png,jpeg,webp"
+              onChange={setHandleImages}
+              ref={fileInputRef}
+            />
             {imageFile && (
               <ImageVisualizer image={imageFile} />
             )}
           </div>
           <Button className="space-x-3" onClick={onSubmit}>
             <span>
-              {!generatedText ? 'Generar' : 'Generar otra versión'}
+              Generar
             </span>
-            <div className="text-white dark:text-black size-4" >
+            <div className="text-white dark:text-black size-4">
               <StarsAI />
             </div>
           </Button>
@@ -257,16 +288,29 @@ const PageDocs = () => {
         {!loading ? (
           <div className="group-field">
             <Label htmlFor="generated-document">Documentación generado</Label>
-            <Textarea name="generated-document" defaultValue={generatedText} rows={18} placeholder="Aquí estará tu documentación generada" />
+            <Textarea
+              name="generated-document"
+              defaultValue={generatedText}
+              value={generatedText}
+              rows={18}
+              placeholder="Aquí estará tu documentación generada"
+              onChange={({ target }) => setGeneratedText(target.value)}
+            />
             <div className="space-x-4">
+              <Button variant="secondary" className="space-x-3" onClick={onGetNewVersion}>
+                <div className="size-4 text-black dark:text-white ">
+                  <StarsAI />
+                </div>
+                <span>Generar nueva versión</span>
+              </Button>
               <Button variant="secondary" className="space-x-3" onClick={onCopy}>
                 <Copy size={16} />
                 <span>Copiar</span>
               </Button>
-              {/* <Button variant="secondary" className="space-x-3 mt-3">
-                <FileDown size={16} />
-                <span>Descargar texto generado en .txt</span>
-              </Button> */}
+              <Button variant="secondary" className="space-x-3" onClick={onClear}>
+                <Trash2 size={16} />
+                <span>Limpiar</span>
+              </Button>
             </div>
           </div>
         ) : (

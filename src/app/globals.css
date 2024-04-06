@@ -172,3 +172,19 @@
 @keyframes l2{
   90%,to {clip-path: inset(0)}
 }
+
+#stars-loader-animation {
+  animation: stars-loader 1s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes stars-loader {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

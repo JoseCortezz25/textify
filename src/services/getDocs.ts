@@ -6,6 +6,13 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
 const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
+const generationConfig = {
+  temperature: 0.9,
+  topK: 1,
+  topP: 1,
+  maxOutputTokens: 4048
+};
+
 const getGeneratedDocs = async (
   tone: TONE_DOCS,
   initialText: string,
@@ -13,12 +20,6 @@ const getGeneratedDocs = async (
   userInstructions: string
 ) => {
   let generatedText;
-  const generationConfig = {
-    temperature: 0.9,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 4048
-  };
 
   const parts: any = generateParts(tone, initialText, userInstructions);
 
@@ -43,6 +44,40 @@ const getGeneratedDocs = async (
   return generatedText;
 };
 
+const generateNewVersion = async (
+  tone: TONE_DOCS,
+  initialText: string,
+  tools: TOOL[],
+  userInstructions: string
+) => {
+  let generatedText;
+
+  // generate new version based on generated text and tones
+  const parts: any = generateParts(tone, initialText, userInstructions);
+
+  const result = await model.generateContent({
+    contents: [{
+      role: "user",
+      parts
+    }],
+    generationConfig
+  });
+
+  const response = result.response;
+  generatedText = response.text();
+
+  if (tools.length === 0) return generatedText;
+  const prompt = generateImprovedPrompt(generatedText, tools);
+
+  const improvedResult = await model.generateContent(prompt);
+
+  const improvedResponse = improvedResult.response;
+  generatedText = improvedResponse.text();
+  return generatedText;
+
+};
+
 export {
-  getGeneratedDocs
+  getGeneratedDocs,
+  generateNewVersion
 };
