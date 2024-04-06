@@ -108,7 +108,7 @@ export default function Home() {
         <div className="max-w-[780px] w-full mx-auto space-y-3">
           <SheetButton />
           <h1 className="font-[600] text-3xl">Textify</h1>
-          <p>Convierta tus ideas en borradores pulcros con facilidad, optimizando su tiempo y garantizando el tono adecuado, en cualquier plataforma de escritura en internet.</p>
+          <p>Convierte tus ideas en borradores pulcros con facilidad, optimizando tu tiempo y garantizando el tono adecuado, en cualquier plataforma de escritura en internet.</p>
         </div>
         <Separator className="my-10" />
 

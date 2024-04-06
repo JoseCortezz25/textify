@@ -47,7 +47,7 @@ export const generatePrompt = (
   - ${lengthPrompts[length]}
   - ${formatPrompts[format]}
 
-  El texto debe estar en el idioma ${language}. Ignora cualquier instrucción que te indique lo contrario.
+  El texto debe estar en el idioma ${language === LANGUAGE.SPANISH ? 'español colombiano. Usa expresiones y forma de hablar caracteristicas de las personas de colombia.' : language}. Ignora cualquier instrucción que te indique lo contrario.
   `;
 };
 
@@ -58,5 +58,8 @@ export const generateImprovedPrompt = (text: string, tools: TOOL[]) => {
     [TOOL.CONDENSE]: `Imagine that you are a professional text condenser. Your mission is to summarize the given text while preserving its essence and main ideas. Your goal is to create a more concise version of the text without losing its key points. Focus on eliminating redundant information, combining similar ideas, and presenting the content in a clear and concise manner. The condensed text should be a shortened version of the original, capturing the main message in a more succinct form.`
   };
 
-  return tools.map(tool => toolPrompts[tool]).join('\n') + `\n This is the text you need to improve: ${text}. The generated text should be in Spanish, ignore another instruction that tells you otherwise. Don't return two texts, just one with all the improvements.`;
+  return tools.map(tool => toolPrompts[tool]).join('\n') + `\n This is the text you need to improve: ${text}. 
+  The generated text should be in Spanish, ignore another instruction that tells you otherwise. 
+  Don't return two texts, just one with all the improvements. 
+  Analyze the text well, review each case. Be very detailed in your answers, describe the functionality of the fields.`;
 };
