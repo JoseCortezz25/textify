@@ -12,7 +12,8 @@ import {
   ListBullet,
   Paragraph,
   StarsAI,
-  TwitterX
+  TwitterX,
+  RegenerateAI
 } from '@/components/Icons';
 import { OptionButton } from '@/components/OptionButton';
 import { LanguageOption } from '@/components/LanguageOption';
@@ -397,7 +398,7 @@ export default function Home() {
                     <Button
                       variant="secondary" className="mt-4 space-x-2" onClick={onGenerateNewVersion}>
                       <div className="size-4 text-black dark:text-white">
-                        <StarsAI />
+                        <RegenerateAI />
                       </div>
                       <span>Generar otra versión</span>
                     </Button>

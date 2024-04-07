@@ -1,6 +1,6 @@
 "use client";
 
-import { StarsAI } from "@/components/Icons";
+import { StarsAI, RegenerateAI } from "@/components/Icons";
 import SheetButton from "@/components/SheetButton";
 import { Alert, AlertDescription, Button, Input, Label, Separator, Switch, Textarea } from "@/components/ui";
 import { ResponseAI, TONE_DOCS, TOOL } from "@/utils/types";
@@ -296,11 +296,11 @@ const PageDocs = () => {
               placeholder="Aquí estará tu documentación generada"
               onChange={({ target }) => setGeneratedText(target.value)}
             />
-            <div className="space-x-4">
+            <div className="flex flex-wrap gap-4">
               {generatedText && (
                 <Button variant="secondary" className="space-x-3" onClick={onGetNewVersion}>
                   <div className="size-4 text-black dark:text-white ">
-                    <StarsAI />
+                    <RegenerateAI />
                   </div>
                   <span>Generar nueva versión</span>
                 </Button>
