@@ -9,7 +9,3 @@
 .docs-page .right-column {
   @apply w-full lg:w-[70%];
 }
-
-.title-docs {
-  @apply mt-3 font-[600] text-3xl;
-}
