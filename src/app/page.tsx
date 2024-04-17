@@ -165,7 +165,7 @@ export default function Home() {
                 maxLength={MAX_CHARACTERS}
                 onChange={({ target }) => handleTextArea(target)}
                 value={initialMessage}
-                className="max-h-[300px]"
+                className="min-h-[120px] max-h-[300px]"
               />
               <p
                 className={cn(
@@ -383,7 +383,7 @@ export default function Home() {
                   placeholder="Aqui estará tu borrador generado"
                   rows={8}
                   defaultValue={preview}
-                  className="max-h-[500px]"
+                  className="min-h-[160px] max-h-[500px]"
                 />
                 <div className="flex space-x-3">
                   <Button
