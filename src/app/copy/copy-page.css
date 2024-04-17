@@ -1,0 +1,19 @@
+.copy-page {
+  @apply flex flex-col lg:flex-row justify-between max-w-[1324px] mx-auto px-6 lg:px-6 py-16;
+}
+
+.copy-page .left-column {
+  @apply w-full lg:w-[30%];
+} 
+
+.copy-page .right-column {
+  @apply w-full lg:w-[65%];
+}
+
+.subtitle-group {
+  @apply text-[15.5px] font-semibold;
+}
+
+.without-ring {
+  @apply focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0;
+}

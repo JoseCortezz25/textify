@@ -187,7 +187,7 @@ const PageDocs = () => {
     <div className="docs-page">
       <div className="left-column">
         <SheetButton />
-        <h1 className="title-docs">Textify <strong>Docs</strong></h1>
+        <h1 className="title-page">Textify <strong>Docs</strong></h1>
         <p className="mt-3">Crea documentación a partir de imágenes.</p>
         <Separator className="my-5" />
         <div className="group-field">

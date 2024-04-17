@@ -188,3 +188,8 @@
     transform: scale(1);
   }
 }
+
+.title-page {
+  @apply mt-3 font-[600] text-3xl;
+}
+
