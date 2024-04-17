@@ -122,7 +122,6 @@ const PageDocs = () => {
   };
 
   const handleTextArea = (message: string) => {
-
     if (message.length >= MAX_CHARACTERS) return;
     setInitialMessage(message);
     setCountText(message.length);

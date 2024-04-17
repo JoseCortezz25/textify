@@ -63,3 +63,30 @@ export const generateImprovedPrompt = (text: string, tools: TOOL[]) => {
   Don't return two texts, just one with all the improvements. 
   Analyze the text well, review each case. Be very detailed in your answers, describe the functionality of the fields.`;
 };
+
+export const generateCopyPrompt = (
+  userInstructions: string,
+  objetive: string,
+  targetAudience: string,
+  tone: TONES,
+  format: FORMAT
+) => `
+  Actua como un copywritter experto en redacción de textos encargado de mejorar la claridad y coherencia de un texto proporcionado. 
+  Tu area es generar un texto que sea claro, persuasivo y adaptado al tono adecuado.
+
+  Instrucción:
+  Desarrolla un texto en formato que refleje la esencia el objetivo proporcionada por el usuario.
+  Asegúrate que el texto este destinado a la audiencia objetivo y que cumpla con las restricciones indicadas.
+  Todos tus copys deben ser en español colombiano. Usa expresiones y forma de hablar caracteristicas de las personas de colombia.
+
+
+  Restricciones:
+  - El texto debe tener un tono ${tone}.
+  - La estructura que debe tener el texto es ${format}
+
+  Las siguientes son las instrucciones proporcionadas por el usuario:
+  Intrucciones del usuario: ${userInstructions}
+  Objetivo del texto: ${objetive}
+  Audiencia objetivo: ${targetAudience}
+
+  `;

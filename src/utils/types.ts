@@ -21,7 +21,7 @@ export enum FORMAT {
   IDEAS = "ideas",
   BLOG = "blog",
   TWEET = "tweet",
-  DOCUMENTATION = "documentation"
+  DOCUMENTATION = "documentation",
 };
 
 export enum LENGTH {

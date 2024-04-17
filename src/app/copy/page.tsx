@@ -1,15 +1,41 @@
 "use client";
 
-import { Button, Label, RadioGroup, RadioGroupItem, Separator, Textarea } from '@/components/ui';
+import { Button, Label, Separator, Textarea } from '@/components/ui';
 import './copy-page.css';
 import { cn } from '@/utils/utils';
-import { TONES } from '@/utils/types';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { FORMAT, LENGTH, TONES } from '@/utils/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { GraduationCap, Trash } from 'lucide-react';
 import SheetButton from '@/components/SheetButton';
+import { useState } from 'react';
+import { generateCopy } from '@/services/getDocs';
 
 const PageCopy = () => {
+  const MAX_CHARACTERS = 5000;
+  // const countText = 0;
+  const [countText, setCountText] = useState<number>(0);
+  const [instruction, setInstruction] = useState<string>('');
+  const [objective, setObjective] = useState<string>('');
+  const [audience, setAudience] = useState<string>('');
+  const [tone, setTone] = useState<TONES>(TONES.PROFESSIONAL);
+  const [format, setFormat] = useState<FORMAT>(FORMAT.PARAGRAPH);
+  const [length, setLength] = useState<LENGTH>(LENGTH.MEDIUM);
+
+  const handleGenerateCopy = () => {
+    generateCopy(instruction, objective, audience, tone, format)
+      .then((response) => {
+        console.log('response', response);
+      })
+      .catch((error) => {
+        console.error('Error generating copy', error);
+      });
+  };
+
+  const handleIntruction = (value: string) => {
+    if (value.length >= MAX_CHARACTERS) return;
+    setInstruction(value);
+    setCountText(value.length);
+  };
+
   return (
     <div className="copy-page">
       <div className="left-column">
@@ -21,10 +47,57 @@ const PageCopy = () => {
         <Separator className="my-5" />
 
         <div className="group-field">
+          <Label className='subtitle-group'>Objetivo del mensaje</Label>
+          <Textarea
+            placeholder='Describe el objetivo del mensaje que deseas transmitir'
+            className='min-h-[110px] max-h-[190px]'
+            onChange={(e) => setObjective(e.target.value)}
+            value={objective}
+          />
+        </div>
+
+        <div className="group-field">
+          <Label className='subtitle-group'>Audiencia</Label>
+          <Textarea
+            placeholder='Describe la audiencia objetiva de tu mensaje'
+            className='min-h-[110px] max-h-[190px]'
+            onChange={(e) => setAudience(e.target.value)}
+            value={audience}
+          />
+        </div>
+        <div className="group-field">
+          <Label className='subtitle-group' htmlFor="message">Tamaño del texto</Label>
+          <div className="rounded-md overflow-hidden border border-gray-200 dark:border-slate-800 grid grid-cols-3">
+            <button
+              role="button"
+              className={cn('text-[15px] w-full grid place-content-center py-2 px-4 hover:bg-gray-200 dark:hover:bg-slate-800/50 duration-200 transition-all ease-in-out')}
+              onClick={() => setLength(LENGTH.SHORT)}
+            >
+              Corto
+            </button>
+            <button
+              role="button"
+              className={cn('text-[15px] w-full grid place-content-center py-2 px-4 hover:bg-gray-200 dark:hover:bg-slate-800/50 duration-200 transition-all ease-in-out')}
+              onClick={() => setLength(LENGTH.MEDIUM)}
+            >
+              Mediano
+            </button>
+            <button
+              role="button"
+              className={cn('text-[15px] w-full grid place-content-center py-2 px-4 hover:bg-gray-200 dark:hover:bg-slate-800/50 duration-200 transition-all ease-in-out')}
+              onClick={() => setLength(LENGTH.LONG)}
+            >
+              Largo
+            </button>
+          </div>
+
+        </div>
+
+        <div className="group-field">
           <Label className="subtitle-group" htmlFor="message">Elige el tono</Label>
 
           <Select>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full" onChange={(e) => setTone('profesional')}>
               <SelectValue placeholder="Elige el tono de tu preferencia" />
             </SelectTrigger>
             <SelectContent>
@@ -77,7 +150,6 @@ const PageCopy = () => {
           </Select>
         </div>
 
-
         <div className="group-field">
           <Label className="subtitle-group" htmlFor="message">Estructura</Label>
 
@@ -86,7 +158,7 @@ const PageCopy = () => {
               <SelectValue placeholder="Elige el tono de tu preferencia" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="storytelling">
+              {/* <SelectItem value="storytelling">
                 <div className="flex space-x-3 items-center py-2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
@@ -94,7 +166,7 @@ const PageCopy = () => {
 
                   <p>Storytelling</p>
                 </div>
-              </SelectItem>
+              </SelectItem> */}
               <SelectItem value="parrafo">
                 <div className="flex space-x-3 items-center py-2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
@@ -107,7 +179,7 @@ const PageCopy = () => {
               <SelectItem value="bullet">
                 <div className="flex space-x-3 items-center py-2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                    <path strokeLinecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                   </svg>
 
                   <p>Bullet</p>
@@ -118,49 +190,6 @@ const PageCopy = () => {
           </Select>
         </div>
 
-        <div className="group-field">
-          <Label className='subtitle-group' htmlFor="message">Tamaño del texto</Label>
-          <div className="rounded-md overflow-hidden border border-gray-200 dark:border-slate-800 grid grid-cols-3">
-            <button
-              role="button"
-              className={cn('text-[15px] w-full grid place-content-center py-2 px-4 hover:bg-gray-200 dark:hover:bg-slate-800/50 duration-200 transition-all ease-in-out')}
-            // onClick={() => setTone(TONE_DOCS.CASUAL)}
-            >
-              Corto
-            </button>
-            <button
-              role="button"
-              className={cn('text-[15px] w-full grid place-content-center py-2 px-4 hover:bg-gray-200 dark:hover:bg-slate-800/50 duration-200 transition-all ease-in-out')}
-            // onClick={() => setTone(TONE_DOCS.OBJETIVE)}
-            >
-              Mediano
-            </button>
-            <button
-              role="button"
-              className={cn('text-[15px] w-full grid place-content-center py-2 px-4 hover:bg-gray-200 dark:hover:bg-slate-800/50 duration-200 transition-all ease-in-out')}
-            // onClick={() => setTone(TONE_DOCS.FORMAL)}
-            >
-              Largo
-            </button>
-          </div>
-
-        </div>
-
-        <div className="group-field">
-          <Label className='subtitle-group'>Objetivo del mensaje</Label>
-          <Textarea
-            placeholder='Describe el objetivo del mensaje que deseas transmitir'
-            className='min-h-[110px] max-h-[190px]'
-          />
-        </div>
-
-        <div className="group-field">
-          <Label className='subtitle-group'>Audiencia</Label>
-          <Textarea
-            placeholder='Describe la audiencia objetiva de tu mensaje'
-            className='min-h-[110px] max-h-[190px]'
-          />
-        </div>
       </div>
 
       <Separator orientation="vertical" className="hidden lg:flex w-[2px] h-[95vh]" />
@@ -175,15 +204,17 @@ const PageCopy = () => {
                 name="initial-message"
                 placeholder="Añade instrucciones complementarias"
                 className='min-h-[180px] max-h-[450px] resize-none'
+                onChange={(e) => handleIntruction(e.target.value)}
+                value={instruction}
               />
               <Button className="absolute bottom-3 right-3">Generar texto</Button>
             </div>
           </div>
-          {/* <p className={cn('text-[12px] mt-2', countText > MAX_CHARACTERS - 200 && 'text-yellow-400', countText > MAX_CHARACTERS - 50 && 'text-red-500')}><span>{countText}</span> / <span>{MAX_CHARACTERS}</span></p> */}
+          <p className={cn('text-[12px] mt-2', countText > MAX_CHARACTERS - 200 && 'text-yellow-400', countText > MAX_CHARACTERS - 50 && 'text-red-500')}><span>{countText}</span> / <span>{MAX_CHARACTERS}</span></p>
           <Textarea
             className="min-h-[500px] bg-transparent mt-4 border-none without-ring resize-none"
           />
-        </div>
+        </div>handleIntruction
       </div>
     </div >
   )

@@ -1,6 +1,6 @@
 import { generateParts } from "@/utils/data";
-import { generateImprovedPrompt } from "@/utils/prompts";
-import { TONE_DOCS, TOOL } from "@/utils/types";
+import { generateCopyPrompt, generateImprovedPrompt } from "@/utils/prompts";
+import { FORMAT, TONES, TONE_DOCS, TOOL } from "@/utils/types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
@@ -74,10 +74,33 @@ const generateNewVersion = async (
   const improvedResponse = improvedResult.response;
   generatedText = improvedResponse.text();
   return generatedText;
+};
 
+const generateCopy = async (
+  userInstructions: string,
+  objetive: string,
+  targetAudience: string,
+  tone: TONES,
+  format: FORMAT
+) => {
+  try {
+    let generatedText;
+
+    const prompt = generateCopyPrompt(userInstructions, objetive, targetAudience, tone, format);
+    const result = await model.generateContent([prompt]);
+    const response = result.response;
+    generatedText = response.text();
+
+    console.log('generatedText', generatedText);
+    return generatedText;
+  } catch (error) {
+    console.error('Error generating copy', error);
+    return new Error('Error generating copy');
+  }
 };
 
 export {
+  generateCopy,
   getGeneratedDocs,
   generateNewVersion
 };
