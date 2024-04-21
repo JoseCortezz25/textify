@@ -133,8 +133,8 @@ const PageCopy = () => {
         <div className="group-field">
           <Label className="subtitle-group" htmlFor="message">Elige el tono</Label>
 
-          <Select>
-            <SelectTrigger className="w-full" onChange={(value: TONES) => setTone(value)}>
+          <Select onValueChange={(value: TONES) => setTone(value)}>
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Elige el tono de tu preferencia" />
             </SelectTrigger>
             <SelectContent>
