@@ -91,11 +91,10 @@ const generateCopy = async (
     const response = result.response;
     generatedText = response.text();
 
-    console.log('generatedText', generatedText);
     return generatedText;
   } catch (error) {
     console.error('Error generating copy', error);
-    return new Error('Error generating copy');
+    throw new Error('Error generating copy');
   }
 };
 

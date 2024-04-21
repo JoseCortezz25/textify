@@ -83,10 +83,11 @@ export const generateCopyPrompt = (
   Restricciones:
   - El texto debe tener un tono ${tone}.
   - La estructura que debe tener el texto es ${format}
+  - Cada copy generado debe ser ${length}
 
   Las siguientes son las instrucciones proporcionadas por el usuario:
   Intrucciones del usuario: ${userInstructions}
-  Objetivo del texto: ${objetive}
-  Audiencia objetivo: ${targetAudience}
+  ${objetive ? 'Objetivo del texto: ' + objetive : ''}
+  ${targetAudience ? 'Audiencia objetivo: ' + targetAudience : ''}
 
-  `;
+`;
