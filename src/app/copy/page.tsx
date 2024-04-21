@@ -247,14 +247,16 @@ const PageCopy = () => {
                   value={generatedText}
                   onChange={(e) => setGeneratedText(e.target.value)}
                 />
-                <Button
-                  variant="secondary"
-                  className="mt-4 space-x-2"
-                  onClick={onCopy}
-                >
-                  <Copy className='size-4' />
-                  <span>Copiar</span>
-                </Button>
+                {generatedText && (
+                  <Button
+                    variant="secondary"
+                    className="mt-4 space-x-2"
+                    onClick={onCopy}
+                  >
+                    <Copy className='size-4' />
+                    <span>Copiar</span>
+                  </Button>
+                )}
               </div>
             ) : (
               <SkeletonTextarea />
