@@ -89,7 +89,7 @@ const generateCopy = async (
 
     const prompt = generateCopyPrompt(userInstructions, objetive, targetAudience, tone, format);
     const generationConfig = {
-      maxOutputTokens: 2024
+      maxOutputTokens: maxTokens || 4048,
     };
     const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig });
     const result = await model.generateContent([prompt]);
