@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Label, Separator, Skeleton, Textarea } from '@/components/ui';
+import { Button, Input, Label, Separator, Skeleton, Textarea } from '@/components/ui';
 import './copy-page.css';
 import { cn } from '@/utils/utils';
 import { FORMAT, LENGTH, TONES } from '@/utils/types';
@@ -8,14 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import SheetButton from '@/components/SheetButton';
 import { useState } from 'react';
 import { generateCopy } from '@/services/getDocs';
-import { generateCopyPrompt } from '@/utils/prompts';
-import Warning from '@/components/Warning';
 import { toast } from 'sonner';
 import { Copy } from 'lucide-react';
 
 const PageCopy = () => {
   const MAX_CHARACTERS = 4000;
-  // const countText = 0;
   const [countText, setCountText] = useState<number>(0);
   const [instruction, setInstruction] = useState('');
   const [objective, setObjective] = useState<string>('');
@@ -23,6 +20,7 @@ const PageCopy = () => {
   const [tone, setTone] = useState<TONES>(TONES.PROFESSIONAL);
   const [format, setFormat] = useState<FORMAT>(FORMAT.PARAGRAPH);
   const [length, setLength] = useState<LENGTH>(LENGTH.MEDIUM);
+  const [limit, setLimit] = useState<number>(35);
   const [generatedText, setGeneratedText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,8 +30,25 @@ const PageCopy = () => {
       return;
     }
 
+    if (limit === 0) {
+      toast.error('El límite no puede ser 0');
+      return;
+    }
+
+    if (limit < 35) {
+      toast.error('El límite no puede ser menor a 35 caracteres');
+      return;
+    }
+
     setIsLoading(true);
-    generateCopy(instruction, objective, audience, tone, format)
+    generateCopy(
+      instruction,
+      objective,
+      audience,
+      tone,
+      format,
+      limit
+    )
       .then((response) => {
         setGeneratedText(response);
       })
@@ -57,6 +72,14 @@ const PageCopy = () => {
     setInstruction(value);
     setCountText(value.length);
   };
+
+  const handleLimit = (value: number) => {
+    if (Number(value) < 0) {
+      toast.error('El límite no puede ser negativo');
+      return;
+    };
+    setLimit(value);
+  }
 
 
   const SkeletonTextarea = () => {
@@ -127,7 +150,20 @@ const PageCopy = () => {
               Largo
             </button>
           </div>
+        </div>
 
+        <div className="group-field">
+          <Label className="subtitle-group" htmlFor="limit">Limitar respuesta</Label>
+          <p className="text-black/80 text-[14px] dark:text-white/80">Limita la respuesta por caracteres.</p>
+          <Input
+            type="number"
+            placeholder="Ej. 200"
+            name="limit"
+            value={limit}
+            onChange={({ target }) => handleLimit(Number(target.value))}
+            min={35}
+            max={MAX_CHARACTERS}
+          />
         </div>
 
         <div className="group-field">
@@ -219,11 +255,11 @@ const PageCopy = () => {
 
       </div>
 
-      <Separator orientation="vertical" className="hidden lg:flex w-[2px] h-[95vh]" />
+      <Separator orientation="vertical" className="hidden lg:flex w-[2px] h-[95vh] sticky top-[10px]" />
       <Separator orientation="horizontal" className="lg:hidden w-full h-[2px] mb-20" />
 
       <div className="right-column">
-        <div className="bg-[#F9F9FA] dark:bg-[#030b1d] rounded-xl py-3 px-5">
+        <div className="bg-[#F9F9FA] dark:bg-[#030b1d] rounded-xl py-3 px-5 sticky top-[10px]">
           <div className="group-field mt-3">
             <Label htmlFor="initial-message">Ingresa la idea principal</Label>
             <div className="relative">

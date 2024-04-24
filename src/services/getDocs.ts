@@ -4,7 +4,7 @@ import { FORMAT, TONES, TONE_DOCS, TOOL } from "@/utils/types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
 
 const generationConfig = {
   temperature: 0.9,
@@ -22,7 +22,7 @@ const getGeneratedDocs = async (
   let generatedText;
 
   const parts: any = generateParts(tone, initialText, userInstructions);
-
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
   const result = await model.generateContent({
     contents: [{
       role: "user",
@@ -54,7 +54,7 @@ const generateNewVersion = async (
 
   // generate new version based on generated text and tones
   const parts: any = generateParts(tone, initialGeneratedText, userInstructions);
-
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
   const result = await model.generateContent({
     contents: [{
       role: "user",
@@ -81,13 +81,19 @@ const generateCopy = async (
   objetive: string,
   targetAudience: string,
   tone: TONES,
-  format: FORMAT
+  format: FORMAT,
+  maxTokens?: number
 ) => {
   try {
     let generatedText;
 
     const prompt = generateCopyPrompt(userInstructions, objetive, targetAudience, tone, format);
+    const generationConfig = {
+      maxOutputTokens: 2024
+    };
+    const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig });
     const result = await model.generateContent([prompt]);
+
     const response = result.response;
     generatedText = response.text();
 
