@@ -10,6 +10,12 @@ import { useState } from 'react';
 import { generateCopy } from '@/services/getDocs';
 import { toast } from 'sonner';
 import { Copy } from 'lucide-react';
+import { CountTokensResponse } from '@google/generative-ai';
+
+interface ContentResponse {
+  content: string;
+  tokens: number;
+}
 
 const PageCopy = () => {
   const MAX_CHARACTERS = 4000;
@@ -23,6 +29,7 @@ const PageCopy = () => {
   const [limit, setLimit] = useState<number>(35);
   const [generatedText, setGeneratedText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [tokens, setTokens] = useState<number>();
 
   const submitGenerateCopy = () => {
     if (!instruction) {
@@ -47,10 +54,14 @@ const PageCopy = () => {
       audience,
       tone,
       format,
+      length,
       limit
     )
-      .then((response) => {
-        setGeneratedText(response);
+      .then((response: ContentResponse) => {
+        setGeneratedText(response.content);
+        console.log('Tokens', response.tokens);
+
+        setTokens(response.tokens);
       })
       .catch((error) => {
         console.error('Error generating copy', error);
@@ -152,7 +163,7 @@ const PageCopy = () => {
           </div>
         </div>
 
-        <div className="group-field">
+        {/* <div className="group-field">
           <Label className="subtitle-group" htmlFor="limit">Limitar respuesta</Label>
           <p className="text-black/80 text-[14px] dark:text-white/80">Limita la respuesta por caracteres.</p>
           <Input
@@ -164,7 +175,7 @@ const PageCopy = () => {
             min={35}
             max={MAX_CHARACTERS}
           />
-        </div>
+        </div> */}
 
         <div className="group-field">
           <Label className="subtitle-group" htmlFor="message">Elige el tono</Label>
@@ -278,6 +289,7 @@ const PageCopy = () => {
           <div className="min-h-[500px]">
             {!isLoading ? (
               <div>
+                {tokens && (<span className="text-[15px]"><b>Tokens generados:</b> {tokens}</span>)}
                 <Textarea
                   className="min-h-[500px] bg-transparent mt-4 border-none without-ring resize-none"
                   value={generatedText}

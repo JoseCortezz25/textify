@@ -69,7 +69,9 @@ export const generateCopyPrompt = (
   objetive: string,
   targetAudience: string,
   tone: TONES,
-  format: FORMAT
+  format: FORMAT,
+  length: LENGTH,
+  maxTokens?: number
 ) => `
   Actua como un copywritter experto en redacción de textos encargado de mejorar la claridad y coherencia de un texto proporcionado. 
   Tu area es generar un texto que sea claro, persuasivo y adaptado al tono adecuado.
@@ -83,11 +85,11 @@ export const generateCopyPrompt = (
   Restricciones:
   - El texto debe tener un tono ${tone}.
   - La estructura que debe tener el texto es ${format}
-  - Cada copy generado debe ser ${length}
-
+  - Cada texto generado debe ser ${lengthPrompts[length]}
+  
   Las siguientes son las instrucciones proporcionadas por el usuario:
   Intrucciones del usuario: ${userInstructions}
   ${objetive ? 'Objetivo del texto: ' + objetive : ''}
-  ${targetAudience ? 'Audiencia objetivo: ' + targetAudience : ''}
-
+  ${targetAudience ? 'Audiencia objetivo: ' + targetAudience : ''}  
 `;
+// ${maxTokens !== 35 ? '- Cada copy generado debe ser ' + length : '- No supere el ' + maxTokens + ' caracteres de espacios. Esto es importante.'}

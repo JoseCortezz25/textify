@@ -1,6 +1,6 @@
 import { generateParts } from "@/utils/data";
 import { generateCopyPrompt, generateImprovedPrompt } from "@/utils/prompts";
-import { FORMAT, TONES, TONE_DOCS, TOOL } from "@/utils/types";
+import { FORMAT, LENGTH, TONES, TONE_DOCS, TOOL } from "@/utils/types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_API_KEY as string);
@@ -82,22 +82,27 @@ const generateCopy = async (
   targetAudience: string,
   tone: TONES,
   format: FORMAT,
+  length: LENGTH,
   maxTokens?: number
 ) => {
   try {
     let generatedText;
 
-    const prompt = generateCopyPrompt(userInstructions, objetive, targetAudience, tone, format);
-    const generationConfig = {
-      maxOutputTokens: maxTokens || 4048,
-    };
-    const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig });
+    const prompt = generateCopyPrompt(userInstructions, objetive, targetAudience, tone, format, length, maxTokens);
+
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
     const result = await model.generateContent([prompt]);
+
+    const { totalTokens } = await model.countTokens(result.response.text());
 
     const response = result.response;
     generatedText = response.text();
 
-    return generatedText;
+    return {
+      content: generatedText,
+      tokens: totalTokens
+    };
   } catch (error) {
     console.error('Error generating copy', error);
     throw new Error('Error generating copy');
